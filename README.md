@@ -8,7 +8,7 @@ This module adds a new field to the registration and edit form of the customer, 
 ## Features
 
 - Adds a new field to the registration and edit form of the customer, allowing them to save their DNI.
-- Displays the DNI field in the back office as well, so it can be easily edited by the store owner.
+- Displays the DNI field in the back office as well, so it can be easily viewed and edited by the store owner. It also displays the DNI in the customer list.
 - Allows setting the DNI as required, unique, and validate it against a regular expression using the module's configuration page.
 - Option to override the default DNI field in the address form, so the DNI can be saved at the address level as well. Useful for modules that use the address DNI field.
 - Additional validations can be added using hooks, or by uploading a custom validation function inside the module's `validations` folder. The module has a built-in validation function that checks the DNI against the chilean RUT format.
@@ -17,7 +17,7 @@ This module adds a new field to the registration and edit form of the customer, 
 
 ## Requirements
 
-- Tested on PrestaShop 8.1, but should work on any version of PrestaShop 1.7.
+- Tested on PrestaShop 8.1, but should work on any version of PrestaShop 1.7.6 or higher.
 - Developed using PHP 8.1
 
 ## Installation
@@ -27,19 +27,21 @@ This module adds a new field to the registration and edit form of the customer, 
 Click on the `Upload a module` button and select the ZIP file you just created. You can also upload the ZIP file directly to the `modules` folder of your PrestaShop installation.
 If you choose this method, make sure to extract the ZIP file after uploading it, so the `customer_dni` folder is created inside the `modules` folder.
 After uploading the ZIP file, the module should appear in the list of modules in the back office, where you can install it.
-4. Once the module is installed, click on the `Configure` button to access the module's configuration page.
-5. Configure the module according to your needs and save the changes.
-6. The module is now ready to use. The DNI field should be displayed in the registration and edit form of the customer.
+3. Once the module is installed, click on the `Configure` button to access the module's configuration page.
+4. Configure the module according to your needs and save the changes.
+5. The module is now ready to use. The DNI field should be displayed in the registration and edit form of the customer.
 
 ## Configuration
 
 The module has a configuration page where you can set the following options:
 
-- **Enable DNI field**: Enable or disable the DNI field in the registration and edit form of the customer.
-- **Required DNI field**: Make the DNI field required in the registration and edit form of the customer.
-- **Unique DNI field**: Make the DNI field unique, so the same DNI cannot be used by multiple customers.
+- **Display customer DNI in back-office**: Show the DNI field in the customer list of the back office, with the option to filter by DNI value. 
+- **Mark as required**: Make the DNI field required in the registration and edit form of the customer.
+- **Mark as unique**: Make the DNI field unique, so the same DNI cannot be used by multiple customers.
 - **Validate DNI field**: Validate the DNI field against a regular expression. You can set the regular expression to use for validation.
-- **Override address DNI field**: Override the default DNI field in the address form, so when the customer saves the DNI in the customer form, it is also saved in the address form for **all** the addresses related to that customer.
+- **Override address DNI field**: Override the default DNI field in the address form, so when the customer saves the DNI in the customer form,
+it is also saved in the address DNI field for **all** the addresses related to that customer.
+Keep in mind that the default DNI field for the address has a maximum length of 16 characters, so if the customer DNI is longer than that, it will be truncated.
 - **Custom validation functions**: Upload a custom validation function to validate the DNI field.
 
 ## Usage

@@ -1,5 +1,4 @@
 <?php
-
 namespace CustomerDNI;
 
 // Simple PSR-4 autoloader

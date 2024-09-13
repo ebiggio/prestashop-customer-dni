@@ -1,5 +1,4 @@
 <?php
-
 namespace CustomerDNI\Database;
 
 use Db;

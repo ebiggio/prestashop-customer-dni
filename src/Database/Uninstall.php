@@ -1,9 +1,7 @@
 <?php
-
 namespace CustomerDNI\Database;
 
 use Configuration;
-
 
 class Uninstall
 {

@@ -8,10 +8,11 @@
  * @version 1.0.0
  * @license GNU General Public License 3.0
  */
+declare(strict_types = 1);
+
 require_once __DIR__ . '/src/Autoload.php';
 
-use CustomerDNI\Database\Install;
-use CustomerDNI\Database\Uninstall;
+use CustomerDNI\Install\InstallerFactory;
 
 use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\DataColumn;
 use PrestaShop\PrestaShop\Core\Grid\Filter\Filter;
@@ -43,26 +44,24 @@ class Customer_DNI extends Module
 
     public function install(): bool
     {
-        if (false === (new Install())->run()) {
+        $this->_clearCache('*');
+
+        if ( ! parent::install()) {
             return false;
         }
 
-        return parent::install()
-            && $this->registerHook('actionCustomerGridDefinitionModifier')
-            && $this->registerHook('actionCustomerGridQueryBuilderModifier');
-//            && $this->registerHook('actionCustomerFormBuilderModifier')
-//            && $this->registerHook('actionAfterCreateCustomerFormHandler')
-//            && $this->registerHook('actionAfterUpdateCustomerFormHandler')
-//            && $this->registerHook('hookActionObjectCustomerDeleteAfter');
+        $installer = InstallerFactory::createInstaller();
+
+        return $installer->install($this);
     }
 
     public function uninstall(): bool
     {
-        if (false === (new Uninstall())->run()) {
-            return false;
-        }
+        $this->_clearCache('*');
 
-        return parent::uninstall();
+        $installer = InstallerFactory::createInstaller();
+
+        return $installer->uninstall() && parent::uninstall();
     }
 
     /**
@@ -80,11 +79,9 @@ class Customer_DNI extends Module
 
         $definition = $params['definition'];
 
-        $translator = $this->getTranslator();
-
         $definition->getColumns()->addAfter('email',
             (new DataColumn('customer_dni'))
-                ->setName($translator->trans('Customer DNI', [], 'Modules.CustomerDNI.Admin'))
+                ->setName($this->getTranslator()->trans('Customer DNI', [], 'Modules.CustomerDNI.Admin'))
                 ->setOptions([
                     'field' => 'customer_dni'
                 ])

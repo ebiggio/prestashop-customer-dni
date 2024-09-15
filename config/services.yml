@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    public: true
+
+  customer_dni:
+    class: CustomerDNI\CustomerDNI
+    factory: [Module, getInstanceByName]
+    arguments:
+      - 'customer_dni'
+
+  customer_dni.repository.customer_dni_repository:
+    class: CustomerDNI\Repository\CustomerDNIRepository
+    factory: ['@doctrine.orm.default_entity_manager', getRepository]
+    arguments:
+      - CustomerDNI\Entity\CustomerDNI
+
+  customer_dni.presenter.customer_dni_presenter:
+    class: CustomerDNI\Presenter\CustomerDNIPresenter

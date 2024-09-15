@@ -34,9 +34,9 @@ class Installer
             'actionCustomerGridDefinitionModifier',
             'actionCustomerGridQueryBuilderModifier',
             'actionCustomerFormBuilderModifier',
+            'actionAfterCreateCustomerFormHandler',
+            'actionAfterUpdateCustomerFormHandler'
         ];
-//         && $this->registerHook('actionAfterCreateCustomerFormHandler')
-//         && $this->registerHook('actionAfterUpdateCustomerFormHandler')
 //         && $this->registerHook('hookActionObjectCustomerDeleteAfter');
 
         return $module->registerHook($hooks);

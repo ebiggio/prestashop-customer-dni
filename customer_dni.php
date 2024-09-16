@@ -14,10 +14,8 @@ require_once __DIR__ . '/src/Autoload.php';
 
 use CustomerDNI\Install\InstallerFactory;
 use CustomerDNI\Repository\CustomerDNIRepository;
-
-use PrestaShop\PrestaShop\Core\Grid\Column\Type\Common\DataColumn;
-use PrestaShop\PrestaShop\Core\Grid\Filter\Filter;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use CustomerDNI\Controller\BackOfficeHooks;
+use CustomerDNI\Controller\FrontOfficeHooks;
 
 if ( ! defined('_PS_VERSION_')) {
     exit;
@@ -66,7 +64,7 @@ class Customer_DNI extends Module
     }
 
     /**
-     * Hook that modifies the customer grid definition, adding the `customer_dni` field to the grid.
+     * Hook that modifies the customer grid definition, adding the `customer_dni` field as a column.
      *
      * Won't display the DNI field if the configuration setting `CUSTOMER_DNI_DISPLAY` is set to `false`.
      * @param array $params
@@ -79,20 +77,7 @@ class Customer_DNI extends Module
             return;
         }
 
-        $definition = $params['definition'];
-
-        $definition->getColumns()->addAfter('email',
-            (new DataColumn('customer_dni'))
-                ->setName($this->getTranslator()->trans('Customer DNI', [], 'Modules.CustomerDNI.Admin'))
-                ->setOptions([
-                    'field' => 'customer_dni'
-                ])
-        );
-
-        $definition->getFilters()->add(
-            (new Filter('customer_dni', TextType::class))
-                ->setAssociatedColumn('customer_dni')
-        );
+        $params['definition'] = BackOfficeHooks::actionCustomerGridDefinitionModifier($params['definition']);
     }
 
     /**
@@ -110,22 +95,9 @@ class Customer_DNI extends Module
         }
 
         $searchQueryBuilder = $params['search_query_builder'];
-
-        $searchQueryBuilder->addSelect('cdni.`dni` AS `customer_dni`');
-        $searchQueryBuilder->leftJoin('c', '`' . pSQL(_DB_PREFIX_) . 'customer_dni`', 'cdni', 'cdni.`id_customer` = c.`id_customer`');
-
         $searchCriteria = $params['search_criteria'];
 
-        if ('customer_dni' === $searchCriteria->getOrderBy()) {
-            $searchQueryBuilder->orderBy('cdni.`customer_dni`', $searchCriteria->getOrderWay());
-        }
-
-        foreach ($searchCriteria->getFilters() as $filterName => $filterValue) {
-            if ('customer_dni' === $filterName) {
-                $searchQueryBuilder->andWhere('cdni.`dni` LIKE :customer_dni');
-                $searchQueryBuilder->setParameter('customer_dni', '%' . $filterValue . '%');
-            }
-        }
+        BackOfficeHooks::actionCustomerGridQueryBuilderModifier($searchQueryBuilder, $searchCriteria);
     }
 
     /**
@@ -134,27 +106,11 @@ class Customer_DNI extends Module
      * @param array $params
      *
      * @return void
-     * @throws Exception If the `customer_dni.repository.customer_dni_repository` service is not available.
+     * @throws Exception
      */
     public function hookActionCustomerFormBuilderModifier(array $params): void
     {
-        $required = (bool)Configuration::get('CUSTOMER_DNI_REQUIRED');
-
-        $formBuilder = $params['form_builder'];
-        $formBuilder->add('customer_dni', TextType::class, [
-            'label'    => $this->GetTranslator()->trans('Customer DNI', [], 'Modules.CustomerDNI.Admin'),
-            'required' => $required,
-        ]);
-
-        $customer_dni = '';
-        if (null !== $params['id']) {
-            /** @var CustomerDNIRepository $customerDNIRepository */
-            $customerDNIRepository = $this->get('customer_dni.repository.customer_dni_repository');
-            $customer_dni = $customerDNIRepository->getDNIByCustomerId((int)$params['id']);
-        }
-
-        $params['data']['customer_dni'] = $customer_dni;
-        $formBuilder->setData($params['data']);
+        BackOfficeHooks::actionCustomerFormBuilderModifier($params['form_builder'], $params['data'], $params['id']);
     }
 
     /**
@@ -163,33 +119,15 @@ class Customer_DNI extends Module
      * @param array $params
      *
      * @return void
-     * @throws PrestaShopException
+     * @throws Exception
      */
     public function hookActionAfterCreateCustomerFormHandler(array $params): void
     {
-        $dni = $params['form_data']['customer_dni'];
-
-        // Check if the DNI is required
-        if (Configuration::get('CUSTOMER_DNI_REQUIRED') && empty($dni)) {
-            throw new PrestaShopException($this->getTranslator()->trans('The DNI is required.', [], 'Modules.CustomerDNI.Admin'));
+        if ($errorMessage = $this->getValidationErrorsForDNI($params['form_data']['customer_dni'], null)) {
+            throw new PrestaShopException($errorMessage);
         }
 
-        // Check the DNI against the stored regular expression
-        if (Configuration::get('CUSTOMER_DNI_REGEXP') && ! preg_match(Configuration::get('CUSTOMER_DNI_REGEXP'), $dni)) {
-            throw new PrestaShopException($this->getTranslator()->trans('The DNI is not valid.', [], 'Modules.CustomerDNI.Admin'));
-        }
-
-        /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $this->get('customer_dni.repository.customer_dni_repository');
-
-        // Check if the DNI must be unique (i.e., no two customers can have the same DNI)
-        if (Configuration::get('CUSTOMER_DNI_UNIQUE')) {
-            if ($customerDNIRepository->getCustomerIDByDNI($dni)) {
-                throw new PrestaShopException($this->getTranslator()->trans('The DNI is already assigned to another customer.', [], 'Modules.CustomerDNI.Admin'));
-            }
-        }
-
-        $customerDNIRepository->addDNI((int)$params['id'], $dni);
+        BackOfficeHooks::actionAfterCreateCustomerFormHandler((int)$params['id'], $params['form_data']['customer_dni']);
     }
 
     /**
@@ -198,50 +136,75 @@ class Customer_DNI extends Module
      * @param array $params
      *
      * @return void
-     * @throws PrestaShopException
+     * @throws Exception
      */
     public function hookActionAfterUpdateCustomerFormHandler(array $params): void
     {
-        $dni = $params['form_data']['customer_dni'];
-        $translator = $this->getTranslator();
+        if ($errorMessage = $this->getValidationErrorsForDNI($params['form_data']['customer_dni'], (int)$params['id'])) {
+            throw new PrestaShopException($errorMessage);
+        }
 
+        BackOfficeHooks::actionAfterUpdateCustomerFormHandler((int)$params['id'], $params['form_data']['customer_dni']);
+    }
+
+    /**
+     * Hook that handles the deletion of a customer, removing the DNI from the database.
+     *
+     * @param array $params
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function hookActionObjectCustomerDeleteAfter(array $params): void
+    {
+        BackOfficeHooks::actionObjectCustomerDeleteAfter($params['object']->id);
+    }
+
+    /**
+     * Hook that allows handling of the form fields from the customer registration and personal information forms of the front office.
+     *
+     * @param array $params
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function hookAdditionalCustomerFormFields(array $params): void
+    {
+        $params['fields'] = FrontOfficeHooks::AdditionalCustomerFormFields($params['fields']);
+    }
+
+    /**
+     * Performs common validations on the DNI and returns an error message if any validation fails.
+     *
+     * @param string $dni The DNI to validate.
+     * @param int|null $currentCustomerID The ID of the customer being edited. If null, a new customer is being created.
+     *
+     * @return string An error message if any validation fails. Otherwise, an empty string.
+     * @throws Exception If the container of the module is not found.
+     */
+    private function getValidationErrorsForDNI(string $dni, int|null $currentCustomerID): string
+    {
         // Check if the DNI is required
         if (Configuration::get('CUSTOMER_DNI_REQUIRED') && empty($dni)) {
-            throw new PrestaShopException($translator->trans('The DNI is required.', [], 'Modules.CustomerDNI.Admin'));
+            return $this->getTranslator()->trans('The DNI is required.', [], 'Modules.CustomerDNI.Admin');
         }
 
         // Check the DNI against the stored regular expression
         if (Configuration::get('CUSTOMER_DNI_REGEXP') && ! preg_match(Configuration::get('CUSTOMER_DNI_REGEXP'), $dni)) {
-            throw new PrestaShopException($translator->trans('The DNI is not valid.', [], 'Modules.CustomerDNI.Admin'));
+            return $this->getTranslator()->trans('The DNI is not valid.', [], 'Modules.CustomerDNI.Admin');
         }
-
-        /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $this->get('customer_dni.repository.customer_dni_repository');
 
         // Check if the DNI must be unique (i.e., no two customers can have the same DNI)
         if (Configuration::get('CUSTOMER_DNI_UNIQUE')) {
+            /** @var CustomerDNIRepository $customerDNIRepository */
+            $customerDNIRepository = $this->get('customer_dni.repository.customer_dni_repository');
             $existingCustomerID = $customerDNIRepository->getCustomerIDByDNI($dni);
 
-            if ($existingCustomerID && $existingCustomerID !== (int)$params['id']) {
-                throw new PrestaShopException($translator->trans('The DNI is already assigned to another customer.', [], 'Modules.CustomerDNI.Admin'));
+            if ($existingCustomerID && $existingCustomerID !== $currentCustomerID) {
+                return $this->getTranslator()->trans('The DNI is already assigned to another customer.', [], 'Modules.CustomerDNI.Admin');
             }
         }
 
-        $customerDNIRepository->addDNI((int)$params['id'], $dni);
-
-        // Check if we must override the DNI in the address
-        if (Configuration::get('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI')) {
-            // Get all the addresses of the customer
-            $customer = new Customer((int)$params['id']);
-            $customerAddresses = $customer->getAddresses($this->context->language->id);
-            $truncatedDNI = substr($dni, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
-
-            // Update the DNI in all the addresses
-            foreach ($customerAddresses as $address) {
-                $updatedAddress = new Address($address['id_address']);
-                $updatedAddress->dni = $truncatedDNI;
-                $updatedAddress->save();
-            }
-        }
+        return '';
     }
 }

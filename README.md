@@ -2,9 +2,10 @@
 ## Version 0.6.0
 
 By default, PrestaShop does not allow setting the customer's DNI (National Identity Document) when creating an account.
-Instead, the field is saved at the address level, which for some cases is not the most appropriate. There's no additional validation for the DNI field;
+Instead, the field is saved at the address level, which for some cases is not the most appropriate. There's also no additional validation for the DNI field;
 a customer can have multiple addresses with different DNIs, and even the same DNI can be used for multiple addresses for different customers. 
-This module adds a new field to the registration and edit form of the customer, allowing them to save their DNI when creating or editing their account.
+This module adds a new field to the registration and edit form of the customer, changing the handling of the DNI field at the customer's personal information level.
+The module also provides additional validation options for the DNI field, such as making it required, unique, and validating it against a regular expression.
 
 ## Features
 
@@ -14,7 +15,7 @@ This module adds a new field to the registration and edit form of the customer, 
 - Option to override the default DNI field in the address form, so the DNI can be saved at the address level as well. Useful for modules that use the address DNI field.
 - Additional validations can be added using hooks, or by uploading a custom validation function inside the module's `validations` folder. The module has a built-in validation function that checks the DNI against the chilean RUT format.
 - The DNI is stored in a new table in the database, linked to the customer's ID, so it can be easily retrieved and used in other modules or customizations.
-- The module is fully translatable, and the DNI field can be translated to multiple languages.
+- The module is fully translatable.
 
 ## Requirements
 
@@ -36,7 +37,7 @@ After uploading the ZIP file, the module should appear in the list of modules in
 
 The module has a configuration page where you can set the following options:
 
-- **Display customer DNI in back-office**: Show the DNI field in the customer list of the back office, with the option to filter by DNI value. 
+- **Display customer DNI in back-office**: Show the DNI field in the customer list of the back office, which also allows filtering and ordering by DNI value. 
 - **Mark as required**: Make the DNI field required in the registration and edit form of the customer.
 - **Mark as unique**: Make the DNI field unique, so the same DNI cannot be used by multiple customers.
 - **Validate DNI field**: Validate the DNI field against a regular expression. You can set the regular expression to use for validation.

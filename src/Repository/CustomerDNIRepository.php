@@ -11,12 +11,12 @@ class CustomerDNIRepository extends EntityRepository
     /**
      * Get the DNI of a customer by the customer ID.
      *
-     * @param int $customerId The ID of the customer.
+     * @param int $customerID The ID of the customer.
      * @return string|null The DNI of the customer. If the customer does not have a DNI, null is returned.
      */
-    public function getDNIByCustomerId(int $customerId): ?string
+    public function getDNIByCustomerID(int $customerID): ?string
     {
-        $customer_dni = $this->findOneBy(['id_customer' => $customerId]);
+        $customer_dni = $this->findOneBy(['id_customer' => $customerID]);
 
         return $customer_dni ? $customer_dni->getDNI() : null;
     }
@@ -37,21 +37,38 @@ class CustomerDNIRepository extends EntityRepository
     /**
      * Add a DNI to a customer.
      *
-     * @param int $customerId The ID of the customer.
+     * @param int $customerID The ID of the customer.
      * @param string $dni The DNI of the customer.
      */
-    public function addDNI(int $customerId, string $dni): void
+    public function addDNI(int $customerID, string $dni): void
     {
-        $customer_dni = $this->findOneBy(['id_customer' => $customerId]);
+        $customer_dni = $this->findOneBy(['id_customer' => $customerID]);
 
         if ( ! $customer_dni) {
             $customer_dni = new CustomerDNI();
-            $customer_dni->setIdCustomer($customerId);
+            $customer_dni->setIdCustomer($customerID);
         }
 
         $customer_dni->setDNI($dni);
 
-        $this->_em->persist($customer_dni);
-        $this->_em->flush();
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($customer_dni);
+        $entityManager->flush();
+    }
+
+    /**
+     * Delete the DNI of a customer.
+     *
+     * @param int $customerID The ID of the customer.
+     */
+    public function deleteDNIByCustomerID(int $customerID): void
+    {
+        $customer_dni = $this->findOneBy(['id_customer' => $customerID]);
+
+        if ($customer_dni) {
+            $entityManager = $this->getEntityManager();
+            $entityManager->remove($customer_dni);
+            $entityManager->flush();
+        }
     }
 }

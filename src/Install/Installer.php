@@ -35,9 +35,10 @@ class Installer
             'actionCustomerGridQueryBuilderModifier',
             'actionCustomerFormBuilderModifier',
             'actionAfterCreateCustomerFormHandler',
-            'actionAfterUpdateCustomerFormHandler'
+            'actionAfterUpdateCustomerFormHandler',
+            'actionObjectCustomerDeleteAfter',
+            'additionalCustomerFormFields'
         ];
-//         && $this->registerHook('hookActionObjectCustomerDeleteAfter');
 
         return $module->registerHook($hooks);
     }

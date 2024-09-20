@@ -174,6 +174,54 @@ class Customer_DNI extends Module
     }
 
     /**
+     * Hook that allows validating custom form fields "belonging" to the module, from the customer registration and personal information forms of the front office.
+     *
+     * This hooks only receives the fields that belong to the module, which are identified by the module's name.
+     *
+     * @param array $params
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function hookValidateCustomerFormFields(array $params): void
+    {
+        // We only added one field, so we know the DNI field is at index 0
+        $customer_dni_form_field = $params['fields'][0];
+
+        if ($errorMessage = $this->getValidationErrorsForDNI($customer_dni_form_field->getValue(), $this->context->customer->id)) {
+            $params['fields']['0']->addError($errorMessage);
+        } else {
+            // We check if in the context, the customer ID is set to determine if the customer is being edited or created
+            if ($this->context->customer->id) {
+                // If the customer is being edited, we call the hook to update the DNI
+                // Since the logic is the same that the one used in the back office, we reuse the same method
+                BackOfficeHooks::actionAfterUpdateCustomerFormHandler($this->context->customer->id, $customer_dni_form_field->getValue());
+            } else {
+                // If the customer is being created, we can't directly save the DNI because the customer ID is not set yet.
+                // Instead, we store the DNI in FrontOfficeHooks singleton instance to be used later in the hook "actionCustomerAccountAdd"
+                FrontOfficeHooks::getInstance()->dni_value = $customer_dni_form_field->getValue();
+            }
+        }
+    }
+
+    /**
+     * Hook that handles the creation of a customer account in the front office, saving the DNI field value.
+     *
+     * @param array $params
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function hookActionCustomerAccountAdd(array $params): void
+    {
+        // We check if the DNI value was saved in the FrontOfficeHooks singleton instance
+        $front_office_hooks = FrontOfficeHooks::getInstance();
+        if ($front_office_hooks->dni_value) {
+            FrontOfficeHooks::actionCustomerAccountAdd((int)$params['newCustomer']->id, $front_office_hooks->dni_value);
+        }
+    }
+
+    /**
      * Performs common validations on the DNI and returns an error message if any validation fails.
      *
      * @param string $dni The DNI to validate.

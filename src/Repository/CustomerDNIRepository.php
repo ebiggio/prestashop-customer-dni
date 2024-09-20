@@ -31,7 +31,7 @@ class CustomerDNIRepository extends EntityRepository
     {
         $customer_id = $this->findOneBy(['dni' => $dni]);
 
-        return $customer_id ? $customer_id->getIdCustomer() : null;
+        return $customer_id ? $customer_id->getIDCustomer() : null;
     }
 
     /**
@@ -46,7 +46,7 @@ class CustomerDNIRepository extends EntityRepository
 
         if ( ! $customer_dni) {
             $customer_dni = new CustomerDNI();
-            $customer_dni->setIdCustomer($customerID);
+            $customer_dni->setIDCustomer($customerID);
         }
 
         $customer_dni->setDNI($dni);

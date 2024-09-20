@@ -10,7 +10,7 @@ class CustomerDNIPresenter
     public function present(CustomerDNI $customerDNI): array
     {
         return [
-            'id_customer' => $customerDNI->getIdCustomer(),
+            'customer_id' => $customerDNI->getIDCustomer(),
             'dni'         => $customerDNI->getDNI(),
         ];
     }

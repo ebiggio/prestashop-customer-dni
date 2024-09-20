@@ -25,12 +25,12 @@ class CustomerDNI
      */
     private string $dni;
 
-    public function getIdCustomer(): ?int
+    public function getIDCustomer(): ?int
     {
         return $this->id_customer;
     }
 
-    public function setIdCustomer(int $id_customer): CustomerDNI
+    public function setIDCustomer(int $id_customer): CustomerDNI
     {
         $this->id_customer = $id_customer;
 

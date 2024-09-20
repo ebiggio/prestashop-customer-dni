@@ -37,7 +37,9 @@ class Installer
             'actionAfterCreateCustomerFormHandler',
             'actionAfterUpdateCustomerFormHandler',
             'actionObjectCustomerDeleteAfter',
-            'additionalCustomerFormFields'
+            'additionalCustomerFormFields',
+            'validateCustomerFormFields',
+            'actionCustomerAccountAdd',
         ];
 
         return $module->registerHook($hooks);

@@ -1,5 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace CustomerDNI\Database;
+
+use CustomerDNI\Config\ModuleSettings;
 
 use Configuration;
 
@@ -12,10 +16,12 @@ class Uninstall
 
     public function uninstallConfiguration(): bool
     {
-        return Configuration::deleteByName('CUSTOMER_DNI_DISPLAY')
-            && Configuration::deleteByName('CUSTOMER_DNI_REQUIRED')
-            && Configuration::deleteByName('CUSTOMER_DNI_UNIQUE')
-            && Configuration::deleteByName('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI')
-            && Configuration::deleteByName('CUSTOMER_DNI_REGEXP');
+        foreach (ModuleSettings::SETTINGS as $settingName => $settingValue) {
+            if ( ! Configuration::deleteByName($settingName)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -1,5 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace CustomerDNI\Database;
+
+use CustomerDNI\Config\ModuleSettings;
 
 use Db;
 use Configuration;
@@ -33,11 +37,13 @@ class Install
 
     public function installConfiguration(): bool
     {
-        return Configuration::updateValue('CUSTOMER_DNI_DISPLAY', true)
-            && Configuration::updateValue('CUSTOMER_DNI_REQUIRED', true)
-            && Configuration::updateValue('CUSTOMER_DNI_UNIQUE', true)
-            && Configuration::updateValue('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI', true)
-            && Configuration::updateValue('CUSTOMER_DNI_REGEXP',  null);
+        foreach (ModuleSettings::SETTINGS as $settingName => $settingValue) {
+             if ( ! Configuration::updateValue($settingName, $settingValue)) {
+                 return false;
+             }
+        }
+
+        return true;
     }
 }
 

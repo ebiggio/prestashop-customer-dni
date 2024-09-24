@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Configuration;
+use Context;
 use Customer;
 use Address;
 use Exception;
@@ -32,7 +33,7 @@ class BackOfficeHooks
      */
     public static function actionCustomerGridDefinitionModifier(GridDefinition $definition): GridDefinition
     {
-        $context = \Context::getContext();
+        $context = Context::getContext();
 
         $definition->getColumns()->addAfter('email',
             (new DataColumn('customer_dni'))
@@ -82,12 +83,13 @@ class BackOfficeHooks
      * @param array $formData The data of the form.
      * @param int|null $customerID The ID of the customer. If null, the form is being used to create a new customer.
      *
+     * @return void
      * @throws Exception
      */
     public static function actionCustomerFormBuilderModifier(FormBuilder $formBuilder, array $formData, int|null $customerID): void
     {
         $required = (bool)Configuration::get('CUSTOMER_DNI_REQUIRED');
-        $context = \Context::getContext();
+        $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         $formBuilder->add('customer_dni', TextType::class, [
@@ -95,14 +97,14 @@ class BackOfficeHooks
             'required' => $required,
         ]);
 
-        $customer_dni = '';
+        $customerDNI = '';
         if (null !== $customerID) {
             /** @var CustomerDNIRepository $customerDNIRepository */
             $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
-            $customer_dni = $customerDNIRepository->getDNIByCustomerID($customerID);
+            $customerDNI = $customerDNIRepository->getDNIByCustomerID($customerID);
         }
 
-        $formData['customer_dni'] = $customer_dni;
+        $formData['customer_dni'] = $customerDNI;
         $formBuilder->setData($formData);
     }
 
@@ -112,11 +114,12 @@ class BackOfficeHooks
      * @param int $customer_id The ID of the customer.
      * @param string $dni The DNI of the customer.
      *
+     * @return void
      * @throws Exception
      */
     public static function actionAfterCreateCustomerFormHandler(int $customer_id, string $dni): void
     {
-        $context = \Context::getContext();
+        $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
@@ -130,11 +133,12 @@ class BackOfficeHooks
      * @param int $customer_id The ID of the customer.
      * @param string $dni The DNI of the customer.
      *
+     * @return void
      * @throws Exception
      */
     public static function actionAfterUpdateCustomerFormHandler(int $customer_id, string $dni): void
     {
-        $context = \Context::getContext();
+        $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
@@ -143,10 +147,11 @@ class BackOfficeHooks
 
         // Check if we must override the DNI in the address
         if (Configuration::get('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI')) {
+            $truncatedDNI = substr($dni, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
+
             // Get all the addresses of the customer
             $customer = new Customer($customer_id);
             $customerAddresses = $customer->getAddresses($context->language->id);
-            $truncatedDNI = substr($dni, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
 
             // Update the DNI in all the addresses
             foreach ($customerAddresses as $address) {
@@ -162,15 +167,38 @@ class BackOfficeHooks
      *
      * @param int $customerID The ID of the customer that was deleted.
      *
+     * @return void
      * @throws Exception
      */
     public static function actionObjectCustomerDeleteAfter(int $customerID): void
     {
-        $context = \Context::getContext();
+        $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
         $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
         $customerDNIRepository->deleteDNIByCustomerId($customerID);
+    }
+
+    /**
+     * Overwrites the DNI value of the address object before it is added to the database with the truncated DNI value of the customer.
+     *
+     * @param Address $address The address object.
+     * @param int $customerID The ID of the customer.
+     *
+     * @return void
+     * @throws Exception
+     */
+    public static function actionObjectAddressAddBefore(Address $address, int $customerID): void
+    {
+        $context = Context::getContext();
+        $container = (new ContainerFinder($context))->getContainer();
+
+        /** @var CustomerDNIRepository $customerDNIRepository */
+        $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
+        $customerDNI = $customerDNIRepository->getDNIByCustomerID($customerID);
+        $truncatedDNI = substr($customerDNI, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
+
+        $address->dni = $truncatedDNI;
     }
 }

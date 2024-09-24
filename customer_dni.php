@@ -68,6 +68,11 @@ class Customer_DNI extends Module
         return $installer->uninstall() && parent::uninstall();
     }
 
+    /**
+     * Redirects the user to the module configuration page.
+     *
+     * @return void
+     */
     public function getContent(): void
     {
         Tools::redirectAdmin(SymfonyContainer::getInstance()->get('router')->generate('customer_dni_settings'));
@@ -171,6 +176,42 @@ class Customer_DNI extends Module
     }
 
     /**
+     * Hook that handles the addition of a new customer address from the front and back office.
+     *
+     * If the configuration setting `CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI` is set to `true`,
+     * the DNI field of the address will be overridden with the DNI of the customer.
+     *
+     * @param array $params
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function hookActionObjectAddressAddBefore(array $params): void
+    {
+        if (Configuration::get('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI')) {
+            BackOfficeHooks::actionObjectAddressAddBefore($params['object'], $params['object']->id_customer);
+        }
+    }
+
+    /**
+     * Hook that handles the update of an existing customer address from the front and back office.
+     *
+     * If the configuration setting `CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI` is set to `true`,
+     * the DNI field of the address will be overridden with the DNI of the customer before saving the address.
+     *
+     * @param array $params
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function hookActionObjectAddressUpdateBefore(array $params): void
+    {
+        if (Configuration::get('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI')) {
+            BackOfficeHooks::actionObjectAddressAddBefore($params['object'], $params['object']->id_customer);
+        }
+    }
+
+    /**
      * Hook that allows handling of the form fields from the customer registration and personal information forms of the front office.
      *
      * @param array $params
@@ -184,7 +225,8 @@ class Customer_DNI extends Module
     }
 
     /**
-     * Hook that allows validating custom form fields "belonging" to the module, from the customer registration and personal information forms of the front office.
+     * Hook that allows validating custom form fields "belonging" to the module,
+     * from the customer registration and personal information forms of the front office.
      *
      * This hooks only receives the fields that belong to the module, which are identified by the module's name.
      *

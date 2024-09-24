@@ -10,8 +10,6 @@
  */
 declare(strict_types = 1);
 
-require_once __DIR__ . '/src/Autoload.php';
-
 use CustomerDNI\Install\InstallerFactory;
 use CustomerDNI\Repository\CustomerDNIRepository;
 use CustomerDNI\Controller\BackOfficeHooks;

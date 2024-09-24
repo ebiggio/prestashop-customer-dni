@@ -1,2 +1,36 @@
 imports:
   - { resource: ../common.yml }
+
+services:
+  CustomerDNI\Controller\BackOfficeSettings:
+    public: true
+    class: CustomerDNI\Controller\BackOfficeSettings
+
+  customer_dni.form.settings_form:
+    public: true
+    class: CustomerDNI\Form\SettingsFormType
+    parent: 'form.type.translatable.aware'
+    tags:
+      - { name: form.type }
+
+  customer_dni.form.settings_form_handler:
+    public: true
+    class: PrestaShop\PrestaShop\Core\Form\Handler
+    arguments:
+      - '@form.factory'
+      - '@prestashop.core.hook.dispatcher'
+      - '@customer_dni.form.settings_data_provider'
+      - 'CustomerDNI\Form\SettingsFormType'
+      - 'Settings'
+
+  customer_dni.form.settings_data_configuration:
+    public: true
+    class: CustomerDNI\Form\SettingsDataConfiguration
+    arguments:
+      - '@prestashop.adapter.legacy.configuration'
+
+  customer_dni.form.settings_data_provider:
+    public: true
+    class: CustomerDNI\Form\SettingsDataProvider
+    arguments:
+      - '@customer_dni.form.settings_data_configuration'

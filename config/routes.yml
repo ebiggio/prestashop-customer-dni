@@ -1,0 +1,7 @@
+customer_dni_settings:
+  path: /customer_dni/settings
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'CustomerDNI\Controller\BackOfficeSettings::index'
+    _legacy_controller: 'BackOfficeSettings'
+    _legacy_link: 'BackOfficeSettings'

@@ -23,6 +23,11 @@ if ( ! defined('_PS_VERSION_')) {
     exit;
 }
 
+$autoloadPath = __DIR__ . '/vendor/autoload.php';
+if (file_exists($autoloadPath)) {
+    require_once $autoloadPath;
+}
+
 class Customer_DNI extends Module
 {
     public function __construct()

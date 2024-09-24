@@ -1,5 +1,5 @@
-# [WIP] PrestaShop Customer DNI module
-## Version 0.7.0
+# [WIP] <img src="logo.png" width="32" height="32" alt="Module logo"> PrestaShop Customer DNI module
+## Version 0.8.0
 
 By default, PrestaShop does not allow setting the customer's DNI (National Identity Document) when creating an account.
 Instead, the field is saved at the address level, which for some cases is not the most appropriate. There's also no additional validation for the DNI field;

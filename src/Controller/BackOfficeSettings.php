@@ -8,6 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormError;
 
+/**
+ * Handles back office settings page.
+ */
 class BackOfficeSettings extends FrameworkBundleAdminController
 {
     public function index(Request $request): Response

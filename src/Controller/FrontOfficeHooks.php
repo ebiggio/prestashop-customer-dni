@@ -6,6 +6,7 @@ namespace CustomerDNI\Controller;
 use CustomerDNI\Repository\CustomerDNIRepository;
 
 use PrestaShop\PrestaShop\Adapter\ContainerFinder;
+use Context;
 use Configuration;
 use Exception;
 use FormField;
@@ -51,7 +52,7 @@ class FrontOfficeHooks
      */
     public static function AdditionalCustomerFormFields(array $form_fields): array
     {
-        $context = \Context::getContext();
+        $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
@@ -95,7 +96,7 @@ class FrontOfficeHooks
      */
     public static function actionCustomerAccountAdd(int $customer_id, string $dni): void
     {
-        $context = \Context::getContext();
+        $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */

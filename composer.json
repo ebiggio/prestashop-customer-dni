@@ -1,0 +1,17 @@
+{
+  "name": "ebiggio/customer_dni",
+  "description": "Customer DNI module for PrestaShop",
+  "license": "GNU General Public License v3.0",
+  "authors": [
+    {
+      "name": "Enzo Biggio",
+      "email": "ebiggio@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "CustomerDNI\\": "src/"
+    }
+  },
+  "type": "prestashop-module"
+}

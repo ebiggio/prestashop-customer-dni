@@ -1,2 +1,4 @@
 ### PhpStorm directory
 .idea/
+
+vendor/

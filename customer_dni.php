@@ -11,6 +11,7 @@
 declare(strict_types = 1);
 
 use CustomerDNI\Install\InstallerFactory;
+use CustomerDNI\Interface\CustomValidator;
 use CustomerDNI\Repository\CustomerDNIRepository;
 use CustomerDNI\Controller\BackOfficeHooks;
 use CustomerDNI\Controller\FrontOfficeHooks;
@@ -302,6 +303,57 @@ class Customer_DNI extends Module
 
             if ($existingCustomerID && $existingCustomerID !== $currentCustomerID) {
                 return $this->getTranslator()->trans('The DNI is already assigned to another customer.', [], 'Modules.CustomerDNI.Admin');
+            }
+        }
+
+        // Check the DNI against custom validators
+        if (Configuration::get('CUSTOMER_DNI_CUSTOM_VALIDATORS')) {
+            return $this->performCustomDNIValidations($dni);
+        }
+
+        return '';
+    }
+
+    /**
+     * Performs additional validations on the DNI, and returns an error message if any validation fails.
+     *
+     * This method will perform custom validations on the DNI, based on the classes that implement the CustomValidator interface
+     * located in the `Validations` directory of the module.
+     *
+     * @param string $dni The DNI to validate.
+     *
+     * @return string An error message if any validation fails. Otherwise, an empty string.
+     */
+    private function performCustomDNIValidations(string $dni): string
+    {
+        // Get all the PHP files in the `validations` directory, except for the `index.php` file
+        $validationClasses = glob(__DIR__ . '/Validations/*.php');
+        $validationClasses = array_filter($validationClasses, function ($file) {
+            return basename($file) !== 'index.php';
+        });
+
+        // Check if there are any validation classes
+        if (empty($validationClasses)) {
+            return '';
+        }
+
+        // Check the DNI against each validation class
+        foreach ($validationClasses as $validationClass) {
+            // Include the validation class
+            require_once $validationClass;
+
+            // Get the class name
+            $className = pathinfo($validationClass, PATHINFO_FILENAME);
+
+            // Create an instance of the validation class
+            $validationInstance = new $className();
+
+            if ( ! $validationInstance instanceof CustomValidator) {
+                continue;
+            }
+
+            if ( ! $validationInstance->validateDNI($dni)) {
+                return $validationInstance->getErrorMessage();
             }
         }
 

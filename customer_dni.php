@@ -17,6 +17,8 @@ use CustomerDNI\Repository\CustomerDNIRepository;
 use CustomerDNI\Controller\BackOfficeHooks;
 use CustomerDNI\Controller\FrontOfficeHooks;
 
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+
 if ( ! defined('_PS_VERSION_')) {
     exit;
 }
@@ -61,6 +63,11 @@ class Customer_DNI extends Module
         $installer = InstallerFactory::createInstaller();
 
         return $installer->uninstall() && parent::uninstall();
+    }
+
+    public function getContent(): void
+    {
+        Tools::redirectAdmin(SymfonyContainer::getInstance()->get('router')->generate('customer_dni_settings'));
     }
 
     /**

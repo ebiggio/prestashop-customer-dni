@@ -1,0 +1,37 @@
+<?php
+declare(strict_types = 1);
+
+namespace CustomerDNI\Form;
+
+use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use PrestaShopBundle\Form\Admin\Type\SwitchType;
+
+class SettingsFormType extends TranslatorAwareType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('customer_dni_display', SwitchType::class, [
+                'label'    => $this->trans('Display DNI field', 'Modules.CustomerDNI.Admin'),
+                'help'     => $this->trans('If enabled, the DNI field will be displayed in the customer registration and personal information forms.', 'Modules.CustomerDNI.Admin'),
+                'required' => false])
+            ->add('customer_dni_required', SwitchType::class, [
+                'label'    => $this->trans('Require DNI', 'Modules.CustomerDNI.Admin'),
+                'help'     => $this->trans('If enabled, the DNI field will be a required field when creating or editing a customer.', 'Modules.CustomerDNI.Admin'),
+                'required' => false])
+            ->add('customer_dni_unique', SwitchType::class, [
+                'label'    => $this->trans('Unique DNI', 'Modules.CustomerDNI.Admin'),
+                'help'     => $this->trans('If enabled, the DNI field will be marked as unique, meaning that two customers cannot have the same DNI.', 'Modules.CustomerDNI.Admin'),
+                'required' => false])
+            ->add('customer_dni_override_address_dni', SwitchType::class, [
+                'label'    => $this->trans('Override address DNI', 'Modules.CustomerDNI.Admin'),
+                'help'     => $this->trans('If enabled, the customer DNI will be copied to the address DNI field for each of the customer\'s addresses. Keep in mind that the address DNI field has a maximum length of 16 characters, so any value longer than that will be truncated.', 'Modules.CustomerDNI.Admin'),
+                'required' => false])
+            ->add('customer_dni_regexp', TextType::class, [
+                'label'    => $this->trans('Regular expression to perform validation', 'Modules.CustomerDNI.Admin'),
+                'help'     => $this->trans('If not empty, the DNI field will be validated against this regular expression.', 'Modules.CustomerDNI.Admin'),
+                'required' => false]);
+    }
+}

@@ -179,8 +179,8 @@ class Customer_DNI extends Module
     /**
      * Hook that handles the addition of a new customer address from the front and back office.
      *
-     * If the configuration setting `CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI` is set to `true`,
-     * the DNI field of the address will be overridden with the DNI of the customer.
+     * If the configuration setting `CUSTOMER_DNI_OVERWRITE_ADDRESS_DNI` is set to `true`,
+     * the DNI field of the address will be overwritten with the DNI of the customer.
      *
      * @param array $params
      *
@@ -189,7 +189,7 @@ class Customer_DNI extends Module
      */
     public function hookActionObjectAddressAddBefore(array $params): void
     {
-        if (Configuration::get('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI')) {
+        if (Configuration::get('CUSTOMER_DNI_OVERWRITE_ADDRESS_DNI')) {
             BackOfficeHooks::actionObjectAddressAddBefore($params['object'], $params['object']->id_customer);
         }
     }
@@ -197,8 +197,8 @@ class Customer_DNI extends Module
     /**
      * Hook that handles the update of an existing customer address from the front and back office.
      *
-     * If the configuration setting `CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI` is set to `true`,
-     * the DNI field of the address will be overridden with the DNI of the customer before saving the address.
+     * If the configuration setting `CUSTOMER_DNI_OVERWRITE_ADDRESS_DNI` is set to `true`,
+     * the DNI field of the address will be overwritten with the DNI of the customer before saving the address.
      *
      * @param array $params
      *
@@ -207,7 +207,7 @@ class Customer_DNI extends Module
      */
     public function hookActionObjectAddressUpdateBefore(array $params): void
     {
-        if (Configuration::get('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI')) {
+        if (Configuration::get('CUSTOMER_DNI_OVERWRITE_ADDRESS_DNI')) {
             BackOfficeHooks::actionObjectAddressAddBefore($params['object'], $params['object']->id_customer);
         }
     }

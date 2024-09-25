@@ -145,8 +145,8 @@ class BackOfficeHooks
         $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
         $customerDNIRepository->addDNI($customer_id, $dni);
 
-        // Check if we must override the DNI in the address
-        if (Configuration::get('CUSTOMER_DNI_OVERRIDE_ADDRESS_DNI')) {
+        // Check if we must overwrite the DNI in the address
+        if (Configuration::get('CUSTOMER_DNI_OVERWRITE_ADDRESS_DNI')) {
             $truncatedDNI = substr($dni, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
 
             // Get all the addresses of the customer

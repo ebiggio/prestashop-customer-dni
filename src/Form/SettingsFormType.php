@@ -25,8 +25,8 @@ class SettingsFormType extends TranslatorAwareType
                 'label'    => $this->trans('Unique DNI', 'Modules.CustomerDNI.Admin'),
                 'help'     => $this->trans('If enabled, the DNI field will be marked as unique, meaning that two customers cannot have the same DNI.', 'Modules.CustomerDNI.Admin'),
                 'required' => false])
-            ->add('customer_dni_override_address_dni', SwitchType::class, [
-                'label'    => $this->trans('Override address DNI', 'Modules.CustomerDNI.Admin'),
+            ->add('customer_dni_overwrite_address_dni', SwitchType::class, [
+                'label'    => $this->trans('Overwrite address DNI', 'Modules.CustomerDNI.Admin'),
                 'help'     => $this->trans('If enabled, the customer DNI will be copied to the address DNI field for each of the customer\'s addresses. Keep in mind that the address DNI field has a maximum length of 16 characters, so any value longer than that will be truncated.', 'Modules.CustomerDNI.Admin'),
                 'required' => false])
             ->add('customer_dni_regexp', TextType::class, [

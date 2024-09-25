@@ -40,7 +40,7 @@ The module has a configuration page where you can set the following options:
 - **Display customer DNI in back-office**: Show the DNI field in the customer list of the back office, which also allows filtering and ordering by DNI value. 
 - **Mark as required**: Make the DNI field required in the registration and edit form of the customer.
 - **Mark as unique**: Make the DNI field unique, so the same DNI cannot be used by multiple customers.
-- **Override address DNI field**: Override the default DNI field in the address form, so when the customer saves the DNI in the customer form,
+- **Overwrite address DNI field**: Overwrite the default DNI field in the address form, so when the customer saves the DNI in the customer form,
 it is also saved in the address DNI field for **all** the addresses related to that customer.
 Keep in mind that the default DNI field for the address has a maximum length of 16 characters, so if the customer DNI is longer than that, it will be truncated.
 - **Validate against a regular expression**: Set a regular expression to use for validating the DNI.

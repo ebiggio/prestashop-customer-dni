@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>customer_dni</name>
+    <displayName><![CDATA[Customer DNI]]></displayName>
+    <version><![CDATA[0.9.0]]></version>
+    <description><![CDATA[Adds a custom DNI field to customer registration and personal information forms.]]></description>
+    <author><![CDATA[Enzo Biggio]]></author>
+    <tab><![CDATA[]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>0</need_instance>
+</module>

@@ -35,7 +35,7 @@ class SettingsFormType extends TranslatorAwareType
                 'required' => false])
             ->add('customer_dni_custom_validators', SwitchType::class, [
                 'label'    => $this->trans('Use custom validators', 'Modules.Customerdni.Admin'),
-                'help'     => $this->trans('If enabled, additional validations will be performed on the DNI field, based on the PHP classes inside the "validations" folder. This is a feature intended to be used by developers; if you\'re not sure about the contents of the scripts inside the "validations" folder, please disable this option.', 'Modules.Customerdni.Admin'),
+                'help'     => $this->trans('If enabled, additional validations will be performed on the DNI field, based on the PHP classes inside the "custom_validators" folder. This is a feature intended to be used by developers; if you\'re not sure about the contents of the scripts inside the "custom_validators" folder, please disable this option.', 'Modules.Customerdni.Admin'),
                 'required' => false]);
     }
 }

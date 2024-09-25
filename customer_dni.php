@@ -326,7 +326,7 @@ class Customer_DNI extends Module
      * Performs additional validations on the DNI, and returns an error message if any validation fails.
      *
      * This method will perform custom validations on the DNI, based on the classes that implement the CustomValidator interface
-     * located in the `Validations` directory of the module.
+     * located in the `custom_validators` directory of the module.
      *
      * @param string $dni The DNI to validate.
      *
@@ -334,8 +334,8 @@ class Customer_DNI extends Module
      */
     private function performCustomDNIValidations(string $dni): string
     {
-        // Get all the PHP files in the `validations` directory, except for the `index.php` file
-        $validationClasses = glob(__DIR__ . '/Validations/*.php');
+        // Get all the PHP files in the `custom_validators` directory, except for the `index.php` file
+        $validationClasses = glob(__DIR__ . '/custom_validators/*.php');
         $validationClasses = array_filter($validationClasses, function ($file) {
             return basename($file) !== 'index.php';
         });

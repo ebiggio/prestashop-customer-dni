@@ -13,7 +13,7 @@ El módulo también proporciona opciones de validación adicionales para el camp
 - Muestra el campo DNI en el back office también, para que los usuarios del back office puedan verlo y editarlo fácilmente. También muestra el DNI en el listado de clientes.
 - Permite configurar el DNI como requerido, único y validarlo contra una expresión regular usando la página de configuración del módulo.
 - Opción de sobreescribir el campo DNI de las direcciones cuando el DNI de un cliente cambia, haciendo que se copie ese valor a todas las direcciones de ese cliente. Útil para módulos que utilizan el campo de dirección DNI.
-- Se pueden agregar validaciones adicionales añadiendo una clase de validación personalizada dentro de la carpeta `validations` del módulo. El módulo incluye un validador personalizado que verifica si el DNI es un RUT chileno válido.
+- Se pueden agregar validaciones adicionales añadiendo una clase de validación personalizada dentro de la carpeta `custom_validators` del módulo. El módulo incluye un validador personalizado que verifica si el DNI es un RUT chileno válido.
 - El DNI se almacena en una nueva tabla de la base de datos, vinculada al ID del cliente, por lo que se puede recuperar fácilmente y utilizar en otros módulos o personalizaciones.
 - El módulo es totalmente traducible.
 
@@ -45,7 +45,7 @@ se guarde también en el campo DNI de la dirección para **todas** las direccion
 Ten en cuenta que el campo DNI por defecto de la dirección tiene una longitud máxima de 16 caracteres, por lo que si el DNI del cliente es más largo que eso, se truncará.
 - **Usar expresión regular para validar**: Puedes establecer una expresión regular a utilizar para validar el DNI.
 - **Usar validadores personalizados**: Habilita el uso de validadores personalizados para el campo DNI.
-Puedes subir una clase de validación personalizada dentro de la carpeta `validations` del módulo para añadir validaciones adicionales al campo DNI.
+Puedes subir una clase de validación personalizada dentro de la carpeta `custom_validators` del módulo para añadir validaciones adicionales al campo DNI.
 
 ## Uso
 
@@ -59,7 +59,7 @@ Puedes utilizar el campo DNI en otros módulos o personalizaciones recuperándol
 ## Personalización
 
 Puedes personalizar el módulo añadiendo validadores adicionales para el campo DNI.
-Para hacerlo, añade una clase de validador personalizado que implemente la interfaz `CustomValidator` a la carpeta `validations`.
+Para hacerlo, añade una clase de validador personalizado que implemente la interfaz `CustomValidator` a la carpeta `custom_validators`.
 El módulo tiene un validador personalizado integrado que comprueba el DNI contra el formato de RUT chileno.
 Puedes utilizar esta clase como referencia para crear tu propio validador personalizado.
 

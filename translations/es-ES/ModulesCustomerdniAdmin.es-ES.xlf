@@ -98,8 +98,8 @@
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="b7dd40320d88f6a545b53d10ffa812cf">
-        <source>If enabled, additional validations will be performed on the DNI field, based on the PHP classes inside the "validations" folder. This is a feature intended to be used by developers; if you're not sure about the contents of the scripts inside the "validations" folder, please disable this option.</source>
-        <target>Si se habilita, se realizarán validaciones adicionales en el campo DNI, en función de las clases PHP dentro de la carpeta "validations". Esta es una función destinada a ser utilizada por desarrolladores; si no estás seguro acerca del contenido de los scripts dentro de la carpeta "validations", deshabilita esta opción.</target>
+        <source>If enabled, additional validations will be performed on the DNI field, based on the PHP classes inside the "custom_validators" folder. This is a feature intended to be used by developers; if you're not sure about the contents of the scripts inside the "custom_validators" folder, please disable this option.</source>
+        <target>Si se habilita, se realizarán validaciones adicionales en el campo DNI, en función de las clases PHP dentro de la carpeta "custom_validators". Esta es una función destinada a ser utilizada por desarrolladores; si no estás seguro acerca del contenido de los scripts dentro de la carpeta "custom_validators", deshabilita esta opción.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="8ae97b6258b89e3efc0a1ce5501894b9">

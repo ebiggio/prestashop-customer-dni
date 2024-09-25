@@ -13,7 +13,7 @@ The module also provides additional validation options for the DNI field, such a
 - Displays the DNI field in the back office as well, so it can be easily viewed and edited by back office users. It also displays the DNI in the customer list.
 - Allows setting the DNI as required, unique, and validate it against a regular expression using the module's configuration page.
 - Option to overwrite the DNI field of the addresses when the customer DNI changes, so that value is copied to all the addresses of that customer. Useful for modules that use the address DNI field.
-- Additional validations can be added by uploading a custom validation class inside the module's `validations` folder. The module includes a custom validator that checks if the DNI is a valid chilean RUT.
+- Additional validations can be added by uploading a custom validation class inside the module's `custom_validators` folder. The module includes a custom validator that checks if the DNI is a valid chilean RUT.
 - The DNI is stored in a new table in the database, linked to the customer's ID, so it can be easily retrieved and used in other modules or customizations.
 - The module is fully translatable.
 
@@ -45,7 +45,7 @@ it is also saved in the address DNI field for **all** the addresses related to t
 Keep in mind that the default DNI field for the address has a maximum length of 16 characters, so if the customer DNI is longer than that, it will be truncated.
 - **Validate against a regular expression**: Set a regular expression to use for validating the DNI.
 - **Use custom validators**: Enable the use of custom validators for the DNI field.
-You can upload a custom validation class inside the module's `validations` folder to add additional validations to the DNI field.
+You can upload a custom validation class inside the module's `custom_validators` folder to add additional validations to the DNI field.
 
 ## Usage
 
@@ -59,7 +59,7 @@ You can use the DNI field in other modules or customizations by retrieving it di
 ## Customization
 
 You can customize the module by adding additional validators for the DNI field.
-To do this, add a custom validator class that implements the `CustomValidator` interface to the `validations` folder.
+To do this, add a custom validator class that implements the `CustomValidator` interface to the `custom_validators` folder.
 The module has a built-in custom validator that checks the DNI against the chilean RUT format.
 You can use this class as a reference to create your own custom validator.
 
@@ -74,5 +74,5 @@ Ideas for future improvements not covered in the current version of the module:
 
 - Add support for PrestaShop 1.7.6 and earlier versions.
 - Validate the DNI during customer creation through the API.
-- Define hooks to set and retrieve the customer's DNI programmatically.
-- Define hooks to add additional validations to the DNI field programmatically.
+- Define hooks to set and retrieve a customer's DNI programmatically.
+- Define hooks to add additional custom validations to the customer's DNI programmatically.

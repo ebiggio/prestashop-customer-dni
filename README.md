@@ -20,7 +20,7 @@ The module also provides additional validation options for the DNI field, such a
 ## Requirements
 
 - Tested on PrestaShop 8.1, but should work on any version of PrestaShop 1.7.7 or higher.
-- Developed using PHP 8.1
+- PHP 8.0 or higher.
 
 ## Installation
 

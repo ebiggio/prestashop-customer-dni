@@ -72,6 +72,7 @@ Este módulo está licenciado bajo la Licencia MIT. Puedes ver los detalles de l
 Ideas para futuras mejoras no contempladas en la versión actual del módulo:
 
 - Añadir soporte para PrestaShop 1.7.6 y versiones anteriores.
+- Permitir seleccionar la ubicación del campo DNI en el formulario de cliente del front office (por ejemplo, antes o después del campo de email).
 - Validar el DNI durante la creación de un cliente mediante la API.
 - Ofrecer hooks que permitan definir y obtener el DNI de un cliente programáticamente.
 - Ofrecer hooks que permitan añadir validaciones personalizadas al DNI de un cliente programáticamente.

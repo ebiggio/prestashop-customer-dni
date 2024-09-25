@@ -73,6 +73,7 @@ This module is released under GNU General Public License version 3. You can find
 Ideas for future improvements not covered in the current version of the module:
 
 - Add support for PrestaShop 1.7.6 and earlier versions.
+- Allow selecting the location of the DNI field in the customer form of the front office (e.g., before or after the email field).
 - Validate the DNI during customer creation through the API.
 - Define hooks to set and retrieve a customer's DNI programmatically.
 - Define hooks to add additional custom validations to the customer's DNI programmatically.

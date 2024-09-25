@@ -43,8 +43,8 @@ class Customer_DNI extends Module
             'max' => _PS_VERSION_,
         ];
 
-        $this->displayName = $this->trans('Customer DNI', [], 'Modules.CustomerDNI.Admin');
-        $this->description = $this->trans('Adds a custom DNI field to customer registration and personal information forms.', [], 'Modules.CustomerDNI.Admin');
+        $this->displayName = $this->trans('Customer DNI', [], 'Modules.Customerdni.Admin');
+        $this->description = $this->trans('Adds a custom DNI field to customer registration and personal information forms.', [], 'Modules.Customerdni.Admin');
     }
 
     public function install(): bool
@@ -67,6 +67,14 @@ class Customer_DNI extends Module
         $installer = InstallerFactory::createInstaller();
 
         return $installer->uninstall() && parent::uninstall();
+    }
+
+    /**
+     * @inerhitDoc
+     */
+    public function isUsingNewTranslationSystem(): bool
+    {
+        return true;
     }
 
     /**
@@ -287,12 +295,12 @@ class Customer_DNI extends Module
     {
         // Check if the DNI is required
         if (Configuration::get('CUSTOMER_DNI_REQUIRED') && empty($dni)) {
-            return $this->getTranslator()->trans('The DNI is required.', [], 'Modules.CustomerDNI.Admin');
+            return $this->getTranslator()->trans('The DNI is required.', [], 'Modules.Customerdni.Admin');
         }
 
         // Check the DNI against the stored regular expression
         if (Configuration::get('CUSTOMER_DNI_REGEXP') && ! preg_match(Configuration::get('CUSTOMER_DNI_REGEXP'), $dni)) {
-            return $this->getTranslator()->trans('The DNI is not valid.', [], 'Modules.CustomerDNI.Admin');
+            return $this->getTranslator()->trans('The DNI is not valid.', [], 'Modules.Customerdni.Admin');
         }
 
         // Check if the DNI must be unique (i.e., no two customers can have the same DNI)
@@ -302,7 +310,7 @@ class Customer_DNI extends Module
             $existingCustomerID = $customerDNIRepository->getCustomerIDByDNI($dni);
 
             if ($existingCustomerID && $existingCustomerID !== $currentCustomerID) {
-                return $this->getTranslator()->trans('The DNI is already assigned to another customer.', [], 'Modules.CustomerDNI.Admin');
+                return $this->getTranslator()->trans('The DNI is already assigned to another customer.', [], 'Modules.Customerdni.Admin');
             }
         }
 

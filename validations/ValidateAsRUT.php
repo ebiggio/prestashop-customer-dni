@@ -34,14 +34,14 @@ class ValidateAsRUT implements CustomValidator
         $dni = preg_replace('/[^0-9K]/', '', $dni);
 
         if (strlen($dni) < 8 || strlen($dni) > 9) {
-            $this->error_message = $translator->trans('The RUT is not valid.', [], 'Modules.CustomerDNI.Admin');
+            $this->error_message = $translator->trans('The RUT is not valid.', [], 'Modules.Customerdni.Admin');
 
             return false;
         }
 
         // Check if the format is valid
-        if ( ! preg_match('/^[0-9]+[0-9K]$/', $dni)) {
-            $this->error_message = $translator->trans('The RUT has an invalid format.', [], 'Modules.CustomerDNI.Admin');
+        if ( ! preg_match('/^\d{7,8}[0-9Kk]$/', $dni)) {
+            $this->error_message = $translator->trans('The RUT has an invalid format.', [], 'Modules.Customerdni.Admin');
 
             return false;
         }
@@ -76,7 +76,7 @@ class ValidateAsRUT implements CustomValidator
         }
 
         if ($vdCalc != $vd) {
-            $this->error_message = $translator->trans('The RUT is not valid.', [], 'Modules.CustomerDNI.Admin');
+            $this->error_message = $translator->trans('The RUT is not valid.', [], 'Modules.Customerdni.Admin');
 
             return false;
         }

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="adminps8" source-language="es-ES" target-language="es-ES" datatype="plaintext">
+    <body>
+      <trans-unit id="1fc452f027983ff84f909f6111c22cd8">
+        <source>Customer DNI</source>
+        <target>RUT del cliente</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="4a0f0d40c45a3520abb79757be1d1819">
+        <source>Adds a custom DNI field to customer registration and personal information forms.</source>
+        <target>Añade un campo RUT a los formularios de registro de clientes e información personal.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="e8cf9bbcd78ec47a4b998c23ecfd7d9b">
+        <source>The DNI is required.</source>
+        <target>El RUT es requerido.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="06bd8b252c7406a4582c60f4cc92a829">
+        <source>The DNI is not valid.</source>
+        <target>El RUT no es válido.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="a9b0bf01ce2a4b755e11f152983db5b6">
+        <source>The DNI is already assigned to another customer.</source>
+        <target>El RUT ya está asignado a otro cliente.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="ab4290a9a23a84abaf75868adec6fccf">
+        <source>Customer DNI module settings</source>
+        <target>Configuración del módulo RUT del cliente</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="89b917e5a536b224b947362547068417">
+        <source>The regular expression is not valid.</source>
+        <target>La expresión regular no es válida.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="93f06f07c72cfb37c42aca860f83c8aa">
+        <source>The value is not valid.</source>
+        <target>El valor no es válido.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="3663fd1f768f85e3729aabf71c894841">
+        <source>Display DNI field</source>
+        <target>Mostrar el RUT</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="0b8b79512055de7d0a1324f8d0fc927f">
+        <source>If enabled, the DNI field will be displayed in the customer list of the back office.</source>
+        <target>Si está habilitado, el campo RUT se mostrará en el listado de clientes del back office.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="6bdd3a5428b97e77615b3b488d0e1410">
+        <source>Require DNI</source>
+        <target>Requerir RUT</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="f91f726dd9fcfbd01cf9a4d106dc3c90">
+        <source>If enabled, the DNI field will be a required field when creating or editing a customer.</source>
+        <target>Si está habilitado, el campo RUT será un campo obligatorio al crear o editar un cliente.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="e998c6a0b62670a7f97edacfafe416e2">
+        <source>Unique DNI</source>
+        <target>RUT único</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="8e060964059276ee2f13e100a1c6829e">
+        <source>If enabled, the DNI field will be marked as unique, meaning that two customers cannot have the same DNI.</source>
+        <target>Si se habilita, el campo RUT se marcará como único, lo que significa que dos clientes no pueden tener el mismo RUT.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="a432bfbdb8637beddcbeb8ad9526d50f">
+        <source>Overwrite address DNI</source>
+        <target>Sobrescribir RUT de la dirección</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="9eeb265aa7b7f6f01a710b4e291435e6">
+        <source>If enabled, the customer DNI will be copied to the address DNI field for each of the customer's addresses. Keep in mind that the address DNI field has a maximum length of 16 characters, so any value longer than that will be truncated.</source>
+        <target>Si se habilita, el RUT del cliente se copiará en el campo RUT de la dirección para cada una de las direcciones del cliente. Ten en cuenta que el campo RUT de la dirección tiene una longitud máxima de 16 caracteres, por lo que cualquier valor superior se truncará.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="da183cdccc816dd26371ac911d82d9f7">
+        <source>Regular expression to perform validation</source>
+        <target>Expresión regular para realizar validación</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="5162dafe50de51d746c454cde29809d7">
+        <source>If not empty, the DNI field will be validated against this regular expression.</source>
+        <target>Si no está vacío, el campo RUT se validará contra esta expresión regular.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="3745ba77887998e6ffbaed340c886550">
+        <source>Use custom validators</source>
+        <target>Utilizar validadores personalizados</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="b7dd40320d88f6a545b53d10ffa812cf">
+        <source>If enabled, additional validations will be performed on the DNI field, based on the PHP classes inside the "validations" folder. This is a feature intended to be used by developers; if you're not sure about the contents of the scripts inside the "validations" folder, please disable this option.</source>
+        <target>Si se habilita, se realizarán validaciones adicionales en el campo DNI, en función de las clases PHP dentro de la carpeta "validations". Esta es una función destinada a ser utilizada por desarrolladores; si no estás seguro acerca del contenido de los scripts dentro de la carpeta "validations", deshabilita esta opción.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="8ae97b6258b89e3efc0a1ce5501894b9">
+        <source>The RUT is not valid.</source>
+        <target>El RUT no es válido.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="3e0d9ab3d93f1df4d1ec23122fc13b96">
+        <source>The RUT has an invalid format.</source>
+        <target>El RUT tiene un formato inválido.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="1a11db3d2781e8ee1401eab17b296b6a">
+        <source>Module settings</source>
+        <target>Configuración del módulo</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

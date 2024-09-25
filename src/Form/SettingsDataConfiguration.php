@@ -70,7 +70,7 @@ class SettingsDataConfiguration implements DataConfigurationInterface
         // Check if the value for the regex is a valid regular expression
         if (isset($configuration['customer_dni_regexp'])) {
             if (false === @preg_match($configuration['customer_dni_regexp'], '')) {
-                $this->errors['customer_dni_regexp'] = $context->getTranslator()->trans('The regular expression is not valid.', [], 'Modules.CustomerDNI.Admin');
+                $this->errors['customer_dni_regexp'] = $context->getTranslator()->trans('The regular expression is not valid.', [], 'Modules.Customerdni.Admin');
 
                 $isValidConfiguration = false;
             }
@@ -84,7 +84,7 @@ class SettingsDataConfiguration implements DataConfigurationInterface
 
                 // The rest of the settings, except for `customer_dni_regexp`, behave like a "boolean switch", so their values can be either `true` or `false`
                 if ( ! in_array($configuration[$key], [true, false], true) && $key !== 'customer_dni_regexp') {
-                    $this->errors[$key] = $context->getTranslator()->trans('The value is not valid.', [], 'Modules.CustomerDNI.Admin');
+                    $this->errors[$key] = $context->getTranslator()->trans('The value is not valid.', [], 'Modules.Customerdni.Admin');
 
                     $isValidConfiguration = false;
                 }

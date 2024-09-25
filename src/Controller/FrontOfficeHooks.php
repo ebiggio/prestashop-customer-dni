@@ -65,8 +65,8 @@ class FrontOfficeHooks
         $customer_dni_form_field = (new FormField())
             ->setName('customer_dni')
             ->setType('text')
-            ->setLabel($context->getTranslator()->trans('Customer DNI', [], 'Modules.CustomerDNI.Admin'))
-            ->setAvailableValues(['comment' => $context->getTranslator()->trans('Only numbers are allowed.', [], 'Modules.CustomerDNI.Admin')])
+            ->setLabel($context->getTranslator()->trans('Customer DNI', [], 'Modules.Customerdni.Shop'))
+            ->setAvailableValues(['comment' => $context->getTranslator()->trans('Only numbers are allowed.', [], 'Modules.Customerdni.Shop')])
             ->setRequired((bool)Configuration::get('CUSTOMER_DNI_REQUIRED'))
             ->setValue($customerDNI);
 

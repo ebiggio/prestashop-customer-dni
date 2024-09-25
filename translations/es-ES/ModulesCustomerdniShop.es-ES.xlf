@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file original="adminps8" source-language="es-ES" target-language="es-ES" datatype="plaintext">
+    <body>
+      <trans-unit id="1fc452f027983ff84f909f6111c22cd8">
+        <source>Customer DNI</source>
+        <target>RUT</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="293eac6418e5fa198be8cbd4dd9e8b53">
+        <source>Only numbers are allowed.</source>
+        <target>Ingresar el dígito verificador separado por un guión.</target>
+        <note>Line: </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

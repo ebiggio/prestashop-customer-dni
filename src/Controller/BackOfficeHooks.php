@@ -37,7 +37,7 @@ class BackOfficeHooks
 
         $definition->getColumns()->addAfter('email',
             (new DataColumn('customer_dni'))
-                ->setName($context->getTranslator()->trans('Customer DNI', [], 'Modules.CustomerDNI.Admin'))
+                ->setName($context->getTranslator()->trans('Customer DNI', [], 'Modules.Customerdni.Admin'))
                 ->setOptions([
                     'field' => 'customer_dni'
                 ])
@@ -93,7 +93,7 @@ class BackOfficeHooks
         $container = (new ContainerFinder($context))->getContainer();
 
         $formBuilder->add('customer_dni', TextType::class, [
-            'label'    => $context->GetTranslator()->trans('Customer DNI', [], 'Modules.CustomerDNI.Admin'),
+            'label'    => $context->GetTranslator()->trans('Customer DNI', [], 'Modules.Customerdni.Admin'),
             'required' => $required,
         ]);
 

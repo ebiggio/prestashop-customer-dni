@@ -37,7 +37,7 @@ class BackOfficeSettings extends FrameworkBundleAdminController
 
         return $this->render('@Modules/customer_dni/views/templates/admin/settings.html.twig', [
             'SettingsForm'  => $configurationForm->createView(),
-            'layoutTitle'   => $this->trans('Customer DNI module settings', 'Modules.CustomerDNI.Admin'),
+            'layoutTitle'   => $this->trans('Customer DNI module settings', 'Modules.Customerdni.Admin'),
             'enableSidebar' => true,
             'help_link'     => $this->generateSidebarLink('BackOfficeSettings'),
         ]);

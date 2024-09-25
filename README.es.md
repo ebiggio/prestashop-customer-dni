@@ -19,7 +19,7 @@ El módulo también proporciona opciones de validación adicionales para el camp
 
 ## Requisitos
 
-- Probado en PrestaShop 8.1, pero debería funcionar en cualquier versión de PrestaShop 1.7.6 o superior.
+- Probado en PrestaShop 8.1, pero debería funcionar en cualquier versión de PrestaShop 1.7.7 o superior.
 - Desarrollado usando PHP 8.1
 
 ## Instalación

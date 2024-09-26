@@ -29,9 +29,9 @@ class CustomerDNIRepository extends EntityRepository
      */
     public function getCustomerIDByDNI(string $dni): ?int
     {
-        $customer_id = $this->findOneBy(['dni' => $dni]);
+        $customerID = $this->findOneBy(['dni' => $dni]);
 
-        return $customer_id ? $customer_id->getIDCustomer() : null;
+        return $customerID ? $customerID->getIDCustomer() : null;
     }
 
     /**

@@ -111,46 +111,46 @@ class BackOfficeHooks
     /**
      * Handles the form submission of the customer form in the back office for a new customer, saving the DNI field value.
      *
-     * @param int $customer_id The ID of the customer.
+     * @param int $customerID The ID of the customer.
      * @param string $dni The DNI of the customer.
      *
      * @return void
      * @throws Exception
      */
-    public static function actionAfterCreateCustomerFormHandler(int $customer_id, string $dni): void
+    public static function actionAfterCreateCustomerFormHandler(int $customerID, string $dni): void
     {
         $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
         $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
-        $customerDNIRepository->addDNI($customer_id, $dni);
+        $customerDNIRepository->addDNI($customerID, $dni);
     }
 
     /**
      * Handles the form submission of the customer form in the back office for an existing customer, updating the DNI field value.
      *
-     * @param int $customer_id The ID of the customer.
+     * @param int $customerID The ID of the customer.
      * @param string $dni The DNI of the customer.
      *
      * @return void
      * @throws Exception
      */
-    public static function actionAfterUpdateCustomerFormHandler(int $customer_id, string $dni): void
+    public static function actionAfterUpdateCustomerFormHandler(int $customerID, string $dni): void
     {
         $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
         $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
-        $customerDNIRepository->addDNI($customer_id, $dni);
+        $customerDNIRepository->addDNI($customerID, $dni);
 
         // Check if we must overwrite the DNI in the address
         if (Configuration::get('CUSTOMER_DNI_OVERWRITE_ADDRESS_DNI')) {
             $truncatedDNI = substr($dni, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
 
             // Get all the addresses of the customer
-            $customer = new Customer($customer_id);
+            $customer = new Customer($customerID);
             $customerAddresses = $customer->getAddresses($context->language->id);
 
             // Update the DNI in all the addresses

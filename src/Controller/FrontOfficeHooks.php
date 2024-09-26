@@ -88,19 +88,19 @@ class FrontOfficeHooks
     /**
      * Adds the DNI of a new customer that is being registered.
      *
-     * @param int $customer_id The ID of the new customer.
+     * @param int $customerID The ID of the new customer.
      * @param string $dni The DNI of the customer.
      *
      * @return void
      * @throws Exception
      */
-    public static function actionCustomerAccountAdd(int $customer_id, string $dni): void
+    public static function actionCustomerAccountAdd(int $customerID, string $dni): void
     {
         $context = Context::getContext();
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
         $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
-        $customerDNIRepository->addDNI($customer_id, $dni);
+        $customerDNIRepository->addDNI($customerID, $dni);
     }
 }

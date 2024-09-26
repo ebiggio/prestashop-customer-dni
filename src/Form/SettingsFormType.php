@@ -23,7 +23,7 @@ class SettingsFormType extends TranslatorAwareType
                 'required' => false])
             ->add('customer_dni_unique', SwitchType::class, [
                 'label'    => $this->trans('Unique DNI', 'Modules.Customerdni.Admin'),
-                'help'     => $this->trans('If enabled, the DNI field will be marked as unique, meaning that two customers cannot have the same DNI.', 'Modules.Customerdni.Admin'),
+                'help'     => $this->trans('If enabled, the DNI field will be marked as unique, meaning that two customers cannot have the same DNI. The uniqueness check is only performed against DNIs that belongs to registered customers. Guest customers are not taken into account; this exception allows guest customers to later register with the same DNI they used for a previous purchase.', 'Modules.Customerdni.Admin'),
                 'required' => false])
             ->add('customer_dni_overwrite_address_dni', SwitchType::class, [
                 'label'    => $this->trans('Overwrite address DNI', 'Modules.Customerdni.Admin'),

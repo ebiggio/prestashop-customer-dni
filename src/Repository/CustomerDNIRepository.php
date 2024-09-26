@@ -35,6 +35,25 @@ class CustomerDNIRepository extends EntityRepository
     }
 
     /**
+     * Get all the IDs of the customers that have a specific DNI.
+     *
+     * @param string $dni The DNI of the customers.
+     * @return array|null The IDs of the customers. If no customers have the DNI, null is returned.
+     */
+    public function getAllCustomerIDsByDNI(string $dni): ?array
+    {
+        $customerIDs = $this->findBy(['dni' => $dni]);
+
+        if ( ! $customerIDs) {
+            return null;
+        }
+
+        return array_map(function (CustomerDNI $customerDNI) {
+            return $customerDNI->getIDCustomer();
+        }, $customerIDs);
+    }
+
+    /**
      * Add a DNI to a customer.
      *
      * @param int $customerID The ID of the customer.

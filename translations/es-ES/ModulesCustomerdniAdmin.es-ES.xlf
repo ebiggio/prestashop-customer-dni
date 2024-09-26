@@ -49,7 +49,7 @@
       </trans-unit>
       <trans-unit id="0b8b79512055de7d0a1324f8d0fc927f">
         <source>If enabled, the DNI field will be displayed in the customer list of the back office.</source>
-        <target>Si está habilitado, el campo RUT se mostrará en el listado de clientes del back office.</target>
+        <target>Si se habilita, el campo RUT se mostrará en el listado de clientes del back office.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="6bdd3a5428b97e77615b3b488d0e1410">
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="f91f726dd9fcfbd01cf9a4d106dc3c90">
         <source>If enabled, the DNI field will be a required field when creating or editing a customer.</source>
-        <target>Si está habilitado, el campo RUT será un campo obligatorio al crear o editar un cliente.</target>
+        <target>Si se habilita, el campo RUT será un campo obligatorio al crear o editar un cliente.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="e998c6a0b62670a7f97edacfafe416e2">
@@ -68,8 +68,8 @@
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="8e060964059276ee2f13e100a1c6829e">
-        <source>If enabled, the DNI field will be marked as unique, meaning that two customers cannot have the same DNI.</source>
-        <target>Si se habilita, el campo RUT se marcará como único, lo que significa que dos clientes no pueden tener el mismo RUT.</target>
+        <source>If enabled, the DNI field will be marked as unique, meaning that two customers cannot have the same DNI. The uniqueness check is only performed against DNIs that belongs to registered customers. Guest customers are not taken into account; this exception allows guest customers to later register with the same DNI they used for a previous purchase.</source>
+        <target>Si se habilita, el campo RUT se marcará como único, lo que significa que dos clientes no podrán tener un mismo RUT. La comprobación de unicidad sólo se realiza contra RUTs de clientes registrados. Los clientes invitados no se tomarán en cuenta; esta excepción permite a los clientes invitados registrarse más tarde con el mismo RUT que utilizaron en una compra previa.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="a432bfbdb8637beddcbeb8ad9526d50f">

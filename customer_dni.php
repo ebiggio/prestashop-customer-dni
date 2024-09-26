@@ -18,9 +18,7 @@ use CustomerDNI\Controller\FrontOfficeHooks;
 
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 
-if ( ! defined('_PS_VERSION_')) {
-    exit;
-}
+if ( ! defined('_PS_VERSION_')) exit;
 
 $autoloadPath = __DIR__ . '/vendor/autoload.php';
 if (file_exists($autoloadPath)) {
@@ -35,11 +33,12 @@ class Customer_DNI extends Module
         $this->author = 'Enzo Biggio';
         $this->version = '0.9.0';
         $this->need_instance = 0;
+        $this->bootstrap = true;
 
         parent::__construct();
 
         $this->ps_versions_compliancy = [
-            'min' => '1.7.6.0',
+            'min' => '1.7.7.0',
             'max' => _PS_VERSION_,
         ];
 
@@ -307,10 +306,23 @@ class Customer_DNI extends Module
         if (Configuration::get('CUSTOMER_DNI_UNIQUE')) {
             /** @var CustomerDNIRepository $customerDNIRepository */
             $customerDNIRepository = $this->get('customer_dni.repository.customer_dni_repository');
-            $existingCustomerID = $customerDNIRepository->getCustomerIDByDNI($dni);
+            $existingCustomerIDs = $customerDNIRepository->getAllCustomerIDsByDNI($dni);
 
-            if ($existingCustomerID && $existingCustomerID !== $currentCustomerID) {
-                return $this->getTranslator()->trans('The DNI is already assigned to another customer.', [], 'Modules.Customerdni.Admin');
+            if ($existingCustomerIDs && ! in_array($currentCustomerID, $existingCustomerIDs)) {
+                foreach ($existingCustomerIDs as $existingCustomerID) {
+                    $existingCustomer = new Customer($existingCustomerID);
+
+                    /*
+                     * If the existing customer is a guest, we ignore the uniqueness check.
+                     * Otherwise, a guest customer that performs a purchase would not later be able to create an account
+                     * with its own DNI used in said purchase
+                     */
+                    if ($existingCustomer->is_guest) {
+                        continue;
+                    } else {
+                        return $this->getTranslator()->trans('The DNI is already assigned to another customer.', [], 'Modules.Customerdni.Admin');
+                    }
+                }
             }
         }
 

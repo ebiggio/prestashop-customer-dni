@@ -46,6 +46,9 @@ class BackOfficeHooks
         $definition->getFilters()->add(
             (new Filter('customer_dni', TextType::class))
                 ->setAssociatedColumn('customer_dni')
+                ->setTypeOptions([
+                    'required' => false,
+                ])
         );
 
         return $definition;

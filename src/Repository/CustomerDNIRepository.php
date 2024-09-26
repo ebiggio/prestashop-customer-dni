@@ -16,9 +16,9 @@ class CustomerDNIRepository extends EntityRepository
      */
     public function getDNIByCustomerID(int $customerID): ?string
     {
-        $customer_dni = $this->findOneBy(['id_customer' => $customerID]);
+        $customerDNI = $this->findOneBy(['id_customer' => $customerID]);
 
-        return $customer_dni ? $customer_dni->getDNI() : null;
+        return $customerDNI ? $customerDNI->getDNI() : null;
     }
 
     /**
@@ -42,17 +42,17 @@ class CustomerDNIRepository extends EntityRepository
      */
     public function addDNI(int $customerID, string $dni): void
     {
-        $customer_dni = $this->findOneBy(['id_customer' => $customerID]);
+        $customerDNI = $this->findOneBy(['id_customer' => $customerID]);
 
-        if ( ! $customer_dni) {
-            $customer_dni = new CustomerDNI();
-            $customer_dni->setIDCustomer($customerID);
+        if ( ! $customerDNI) {
+            $customerDNI = new CustomerDNI();
+            $customerDNI->setIDCustomer($customerID);
         }
 
-        $customer_dni->setDNI($dni);
+        $customerDNI->setDNI($dni);
 
         $entityManager = $this->getEntityManager();
-        $entityManager->persist($customer_dni);
+        $entityManager->persist($customerDNI);
         $entityManager->flush();
     }
 
@@ -63,11 +63,11 @@ class CustomerDNIRepository extends EntityRepository
      */
     public function deleteDNIByCustomerID(int $customerID): void
     {
-        $customer_dni = $this->findOneBy(['id_customer' => $customerID]);
+        $customerDNI = $this->findOneBy(['id_customer' => $customerID]) ?? null;
 
-        if ($customer_dni) {
+        if ($customerDNI) {
             $entityManager = $this->getEntityManager();
-            $entityManager->remove($customer_dni);
+            $entityManager->remove($customerDNI);
             $entityManager->flush();
         }
     }

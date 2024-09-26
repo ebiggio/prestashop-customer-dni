@@ -62,7 +62,7 @@ class FrontOfficeHooks
         $currentFields = $form_fields;
         $reorderedFields = [];
 
-        $customer_dni_form_field = (new FormField())
+        $customerDNIFormField = (new FormField())
             ->setName('customer_dni')
             ->setType('text')
             ->setLabel($context->getTranslator()->trans('Customer DNI', [], 'Modules.Customerdni.Shop'))
@@ -72,13 +72,13 @@ class FrontOfficeHooks
 
         // Required for the hook "validateCustomerFormFields"
         // That hooks only receives the fields that have defined the "moduleName" property with the name of the module
-        $customer_dni_form_field->moduleName = 'customer_dni';
+        $customerDNIFormField->moduleName = 'customer_dni';
 
         // Iterate over the current fields to insert the DNI field after the email field
         foreach ($currentFields as $fieldName => $fieldForm) {
             $reorderedFields[$fieldName] = $fieldForm;
             if ($fieldName === 'email') {
-                $reorderedFields['customer_dni'] = $customer_dni_form_field;
+                $reorderedFields['customer_dni'] = $customerDNIFormField;
             }
         }
 

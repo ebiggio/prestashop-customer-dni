@@ -247,20 +247,20 @@ class Customer_DNI extends Module
     public function hookValidateCustomerFormFields(array $params): void
     {
         // We only added one field, so we know the DNI field is at index 0
-        $customer_dni_form_field = $params['fields'][0];
+        $customerDNIFormField = $params['fields'][0];
 
-        if ($errorMessage = $this->getValidationErrorsForDNI($customer_dni_form_field->getValue(), $this->context->customer->id)) {
+        if ($errorMessage = $this->getValidationErrorsForDNI($customerDNIFormField->getValue(), $this->context->customer->id)) {
             $params['fields']['0']->addError($errorMessage);
         } else {
             // We check if in the context, the customer ID is set to determine if the customer is being edited or created
             if ($this->context->customer->id) {
                 // If the customer is being edited, we call the hook to update the DNI
                 // Since the logic is the same that the one used in the back office, we reuse the same method
-                BackOfficeHooks::actionAfterUpdateCustomerFormHandler($this->context->customer->id, $customer_dni_form_field->getValue());
+                BackOfficeHooks::actionAfterUpdateCustomerFormHandler($this->context->customer->id, $customerDNIFormField->getValue());
             } else {
                 // If the customer is being created, we can't directly save the DNI because the customer ID is not set yet.
                 // Instead, we store the DNI in FrontOfficeHooks singleton instance to be used later in the hook "actionCustomerAccountAdd"
-                FrontOfficeHooks::getInstance()->dni_value = $customer_dni_form_field->getValue();
+                FrontOfficeHooks::getInstance()->dni_value = $customerDNIFormField->getValue();
             }
         }
     }

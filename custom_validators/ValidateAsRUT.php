@@ -71,10 +71,6 @@ class ValidateAsRUT implements CustomValidator
             $vdCalc = 0;
         }
 
-        if ($vdCalc == 10) {
-            $vdCalc = 'K';
-        }
-
         if ($vdCalc != $vd) {
             $this->error_message = $translator->trans('The RUT is not valid.', [], 'Modules.Customerdni.Admin');
 

@@ -21,17 +21,23 @@ The module also provides additional validation options for the DNI field, such a
 
 - Tested on PrestaShop 8.1, but should work on any version of PrestaShop 1.7.7 or higher.
 - PHP 8.0 or higher.
+- Composer, to generate the necessary autoload files.
 
-## Installation
+## Installation (from this repository)
 
-1. Download this repository to a folder named `customer_dni`, and compress it into a ZIP file.
-2. Upload the ZIP file to your PrestaShop instance. You can do this by going to the back office of your PrestaShop store and navigating to the `Modules` section.
+1. Download this repository to a folder named `customer_dni`.
+2. Enter that folder, and run the following command to generate the necessary Composer autoload files:
+```bash
+composer dump-autoload -o --no-dev
+```
+3. Compress the folder into a ZIP file.
+4. Upload the ZIP file to your PrestaShop instance. You can do this by going to the back office of your PrestaShop store and navigating to the `Modules` section.
 Click on the `Upload a module` button and select the ZIP file you just created. You can also upload the ZIP file directly to the `modules` folder of your PrestaShop installation.
 If you choose this method, make sure to extract the ZIP file after uploading it, so the `customer_dni` folder is created inside the `modules` folder.
-After uploading the ZIP file, the module should appear in the list of modules in the back office, where you can install it.
-3. Once the module is installed, click on the `Configure` button to access the module's configuration page.
-4. Configure the module according to your needs and save the changes.
-5. The module is now ready to use. The DNI field should be displayed in the registration and edit form of the customer.
+5. After uploading the ZIP file, the module should appear in the list of modules in the back office, where you can install it.
+6. Once the module is installed, click on the `Configure` button to access the module's configuration page.
+7. Configure the module according to your needs and save the changes.
+8. The module is now ready to use. The DNI field should be displayed in the registration and edit form of the customer.
 
 ## Configuration
 

@@ -21,17 +21,23 @@ El módulo también proporciona opciones de validación adicionales para el camp
 
 - Probado en PrestaShop 8.1, pero debería funcionar en cualquier versión de PrestaShop 1.7.7 o superior.
 - PHP 8.0 o superior.
+- Composer, para generar los archivos de autoload necesarios.
 
-## Instalación
+## Instalación (desde este repositorio)
 
-1. Descarga este repositorio a una carpeta llamada `customer_dni`, y comprímelo en un archivo ZIP.
-2. Sube el archivo ZIP a tu instancia de PrestaShop. Puedes hacer esto yendo al back office de tu tienda PrestaShop y navegando a la sección `Módulos`.
+1. Descarga este repositorio a una carpeta llamada `customer_dni`.
+2. Entra en dicha carpeta, y ejecuta el siguiente comando para generar los archivos de Composer necesarios:
+```bash
+composer dump-autoload -o --no-dev
+```
+3. Comprime la carpeta en un archivo ZIP.
+4. Sube el archivo ZIP a tu instancia de PrestaShop. Puedes hacer esto yendo al back office de tu tienda PrestaShop y navegando a la sección `Módulos`.
 Haz clic en el botón `Subir un módulo` y selecciona el archivo ZIP que acabas de crear. También puedes subir el archivo ZIP directamente a la carpeta `modules` de tu instalación de PrestaShop.
 Si eliges este método, asegúrate de extraer el archivo ZIP después de subirlo, para que se cree la carpeta `customer_dni` dentro de la carpeta `modules`.
-3. Después de subir el archivo ZIP, el módulo debería aparecer en la lista de módulos en el back office, donde puedes instalarlo.
-4. Una vez instalado el módulo, haz clic en el botón `Configurar` para acceder a la página de configuración del módulo.
-5. Configura el módulo según tus necesidades y guarda los cambios.
-6. El módulo está ahora listo para usarse. El campo DNI debería mostrarse en el formulario de registro y edición del cliente.
+5. Después de subir el archivo ZIP, el módulo debería aparecer en la lista de módulos en el back office, donde puedes instalarlo.
+6. Una vez instalado el módulo, haz clic en el botón `Configurar` para acceder a la página de configuración del módulo.
+7. Configura el módulo según tus necesidades y guarda los cambios.
+8. El módulo está ahora listo para usarse. El campo DNI debería mostrarse en el formulario de registro y edición del cliente.
 
 ## Configuración
 

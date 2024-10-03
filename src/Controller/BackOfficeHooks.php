@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace CustomerDNI\Controller;
 
 use CustomerDNI\Repository\CustomerDNIRepository;
+use CustomerDNI\ConstraintValidator\CustomerDNI;
 
 use PrestaShop\PrestaShop\Adapter\ContainerFinder;
 use PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinition;
@@ -98,7 +99,12 @@ class BackOfficeHooks
         $formBuilder->add('customer_dni', TextType::class, [
             'label'    => $context->GetTranslator()->trans('Customer DNI', [], 'Modules.Customerdni.Admin'),
             'required' => $required,
-        ]);
+            'help'     => $context->getTranslator()->trans('Only numbers are allowed.', [], 'Modules.Customerdni.Admin'),
+            'constraints' => [
+                new CustomerDNI(['customerID' => $customerID]),
+                ],
+            ]
+        );
 
         $customerDNI = '';
         if (null !== $customerID) {

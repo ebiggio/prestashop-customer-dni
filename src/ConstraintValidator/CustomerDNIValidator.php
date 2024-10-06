@@ -39,13 +39,16 @@ class CustomerDNIValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, CustomerDNI::class);
         }
 
+        if (is_null($value) || empty(trim($value))) {
+            return;
+        }
+
         if ( ! is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
         if ( ! $this->isDNIValid($value, $constraint->customerID)) {
-            $this->context->buildViolation($this->errorMessage)
-                ->addViolation();
+            $this->context->buildViolation($this->errorMessage)->addViolation();
         }
     }
 
@@ -116,6 +119,9 @@ class CustomerDNIValidator extends ConstraintValidator
 
     /**
      * Validates the DNI using custom validators.
+     *
+     * This method will perform custom validations on the DNI, based on the classes that implement the CustomValidator interface
+     * located in the `custom_validators` directory of the module.
      *
      * @param string $dni The DNI to be validated.
      * @return bool Whether the DNI is valid.

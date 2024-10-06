@@ -133,7 +133,7 @@ class BackOfficeHooks
 
         /** @var CustomerDNIRepository $customerDNIRepository */
         $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
-        $customerDNIRepository->addDNI($customerID, $dni);
+        $customerDNIRepository->addOrUpdateDNI($customerID, $dni);
     }
 
     /**
@@ -147,12 +147,8 @@ class BackOfficeHooks
      */
     public static function actionAfterUpdateCustomerFormHandler(int $customerID, string $dni): void
     {
-        $context = Context::getContext();
-        $container = (new ContainerFinder($context))->getContainer();
-
-        /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
-        $customerDNIRepository->addDNI($customerID, $dni);
+        // Call the same method as when creating a customer, as the logic is the same
+        BackOfficeHooks::actionAfterCreateCustomerFormHandler($customerID, $dni);
 
         // Check if we must overwrite the DNI in the address
         if (Configuration::get('CUSTOMER_DNI_OVERWRITE_ADDRESS_DNI')) {
@@ -160,7 +156,7 @@ class BackOfficeHooks
 
             // Get all the addresses of the customer
             $customer = new Customer($customerID);
-            $customerAddresses = $customer->getAddresses($context->language->id);
+            $customerAddresses = $customer->getAddresses(Context::getContext()->language->id);
 
             // Update the DNI in all the addresses
             foreach ($customerAddresses as $address) {
@@ -205,7 +201,7 @@ class BackOfficeHooks
 
         /** @var CustomerDNIRepository $customerDNIRepository */
         $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
-        $customerDNI = $customerDNIRepository->getDNIByCustomerID($customerID);
+        $customerDNI = $customerDNIRepository->getDNIByCustomerID($customerID) ?? '';
         $truncatedDNI = substr($customerDNI, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
 
         $address->dni = $truncatedDNI;

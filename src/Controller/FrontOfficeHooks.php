@@ -101,6 +101,6 @@ class FrontOfficeHooks
 
         /** @var CustomerDNIRepository $customerDNIRepository */
         $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
-        $customerDNIRepository->addDNI($customerID, $dni);
+        $customerDNIRepository->addOrUpdateDNI($customerID, $dni);
     }
 }

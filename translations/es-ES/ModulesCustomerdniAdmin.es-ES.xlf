@@ -12,6 +12,16 @@
         <target>Añade un campo RUT a los formularios de registro de clientes e información personal.</target>
         <note>Line: </note>
       </trans-unit>
+      <trans-unit id="8ae97b6258b89e3efc0a1ce5501894b9">
+        <source>The RUT is not valid.</source>
+        <target>El RUT no es válido.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="3e0d9ab3d93f1df4d1ec23122fc13b96">
+        <source>The RUT has an invalid format.</source>
+        <target>El RUT tiene un formato inválido.</target>
+        <note>Line: </note>
+      </trans-unit>
       <trans-unit id="e8cf9bbcd78ec47a4b998c23ecfd7d9b">
         <source>The DNI is required.</source>
         <target>El RUT es requerido.</target>
@@ -25,6 +35,16 @@
       <trans-unit id="a9b0bf01ce2a4b755e11f152983db5b6">
         <source>The DNI is already assigned to another customer.</source>
         <target>El RUT ya está asignado a otro cliente.</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="e0d6d5cc07b4e142c2847b0cfc1327c2">
+        <source>Search by DNI</source>
+        <target>Buscar por RUT</target>
+        <note>Line: </note>
+      </trans-unit>
+      <trans-unit id="293eac6418e5fa198be8cbd4dd9e8b53">
+        <source>Only numbers are allowed.</source>
+        <target>Ingresar el dígito verificador separado por un guión.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="ab4290a9a23a84abaf75868adec6fccf">
@@ -49,7 +69,7 @@
       </trans-unit>
       <trans-unit id="0b8b79512055de7d0a1324f8d0fc927f">
         <source>If enabled, the DNI field will be displayed in the customer list of the back office.</source>
-        <target>Si se habilita, el campo RUT se mostrará en el listado de clientes del back office.</target>
+        <target>Si está habilitado, el campo RUT se mostrará en el listado de clientes del back office.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="6bdd3a5428b97e77615b3b488d0e1410">
@@ -59,7 +79,7 @@
       </trans-unit>
       <trans-unit id="f91f726dd9fcfbd01cf9a4d106dc3c90">
         <source>If enabled, the DNI field will be a required field when creating or editing a customer.</source>
-        <target>Si se habilita, el campo RUT será un campo obligatorio al crear o editar un cliente.</target>
+        <target>Si está habilitado, el campo RUT será un campo obligatorio al crear o editar un cliente.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="e998c6a0b62670a7f97edacfafe416e2">
@@ -67,7 +87,7 @@
         <target>RUT único</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="8e060964059276ee2f13e100a1c6829e">
+      <trans-unit id="e705e393124e86c9e41eb763f486c02f">
         <source>If enabled, the DNI field will be marked as unique, meaning that two customers cannot have the same DNI. The uniqueness check is only performed against DNIs that belongs to registered customers. Guest customers are not taken into account; this exception allows guest customers to later register with the same DNI they used for a previous purchase.</source>
         <target>Si se habilita, el campo RUT se marcará como único, lo que significa que dos clientes no podrán tener un mismo RUT. La comprobación de unicidad sólo se realiza contra RUTs de clientes registrados. Los clientes invitados no se tomarán en cuenta; esta excepción permite a los clientes invitados registrarse más tarde con el mismo RUT que utilizaron en una compra previa.</target>
         <note>Line: </note>
@@ -97,19 +117,9 @@
         <target>Utilizar validadores personalizados</target>
         <note>Line: </note>
       </trans-unit>
-      <trans-unit id="b7dd40320d88f6a545b53d10ffa812cf">
+      <trans-unit id="65864bbf50b77a33c96fa3aa301a5328">
         <source>If enabled, additional validations will be performed on the DNI field, based on the PHP classes inside the "custom_validators" folder. This is a feature intended to be used by developers; if you're not sure about the contents of the scripts inside the "custom_validators" folder, please disable this option.</source>
         <target>Si se habilita, se realizarán validaciones adicionales en el campo DNI, en función de las clases PHP dentro de la carpeta "custom_validators". Esta es una función destinada a ser utilizada por desarrolladores; si no estás seguro acerca del contenido de los scripts dentro de la carpeta "custom_validators", deshabilita esta opción.</target>
-        <note>Line: </note>
-      </trans-unit>
-      <trans-unit id="8ae97b6258b89e3efc0a1ce5501894b9">
-        <source>The RUT is not valid.</source>
-        <target>El RUT no es válido.</target>
-        <note>Line: </note>
-      </trans-unit>
-      <trans-unit id="3e0d9ab3d93f1df4d1ec23122fc13b96">
-        <source>The RUT has an invalid format.</source>
-        <target>El RUT tiene un formato inválido.</target>
         <note>Line: </note>
       </trans-unit>
       <trans-unit id="1a11db3d2781e8ee1401eab17b296b6a">

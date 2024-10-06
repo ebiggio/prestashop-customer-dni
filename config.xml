@@ -2,7 +2,7 @@
 <module>
     <name>customer_dni</name>
     <displayName><![CDATA[Customer DNI]]></displayName>
-    <version><![CDATA[0.9.0]]></version>
+    <version><![CDATA[1.0.0]]></version>
     <description><![CDATA[Adds a custom DNI field to customer registration and personal information forms.]]></description>
     <author><![CDATA[Enzo Biggio]]></author>
     <tab><![CDATA[]]></tab>

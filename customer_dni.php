@@ -5,7 +5,7 @@
  * Adds a custom DNI field to customer registration and personal information forms.
  *
  * @author Enzo Biggio <ebiggio@gmail.com>
- * @version 0.9.0
+ * @version 1.0.0
  * @license GNU General Public License 3.0
  */
 declare(strict_types = 1);
@@ -35,7 +35,7 @@ class Customer_DNI extends Module
     {
         $this->name = 'customer_dni';
         $this->author = 'Enzo Biggio';
-        $this->version = '0.9.0';
+        $this->version = '1.0.0';
         $this->need_instance = 0;
         $this->bootstrap = true;
 

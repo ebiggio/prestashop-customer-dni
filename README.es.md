@@ -1,6 +1,6 @@
-# [WIP] <img src="logo.png" width="32" height="32" alt="Module logo"> Módulo DNI Cliente PrestaShop
+# <img src="logo.png" width="32" height="32" alt="Module logo"> Módulo DNI Cliente para PrestaShop
 
-## Versión 0.9.0
+## Versión 1.0.0
 
 Por defecto, PrestaShop no permite configurar el DNI (Documento Nacional de Identidad) del cliente al crear una cuenta.
 En cambio, el campo se guarda a nivel de dirección, lo que en algunos casos no es lo más adecuado. Tampoco existe una validación adicional para el campo DNI;

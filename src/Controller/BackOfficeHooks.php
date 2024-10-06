@@ -49,6 +49,9 @@ class BackOfficeHooks
                 ->setAssociatedColumn('customer_dni')
                 ->setTypeOptions([
                     'required' => false,
+                    'attr'     => [
+                        'placeholder' => $context->getTranslator()->trans('Search by DNI', [], 'Modules.Customerdni.Admin')
+                    ]
                 ])
         );
 

@@ -26,6 +26,9 @@ if (file_exists($autoloadPath)) {
     require_once $autoloadPath;
 }
 
+/**
+ * Customer DNI module main class.
+ */
 class Customer_DNI extends Module
 {
     public function __construct()
@@ -273,6 +276,39 @@ class Customer_DNI extends Module
         if ($front_office_hooks->dni_value) {
             FrontOfficeHooks::actionCustomerAccountAdd((int)$params['newCustomer']->id, $front_office_hooks->dni_value);
         }
+    }
+
+    /**
+     * Custom hook that allows other modules to perform operations after a DNI is associated with a customer.
+     *
+     * This hook is triggered after a DNI is processed in the database, whether it's a new entry or an update to an existing one.
+     *
+     * @param array $params The parameters passed to the hook. The following keys are available:
+     * - `customerID` (int): The ID of the customer whose DNI was added or updated.
+     * - `dni` (string): The DNI that was added or updated.
+     *
+     * @return void
+     */
+    public function hookActionCustomerDNIAddAfter(array $params): void
+    {
+        // This hook is intentionally left blank for other modules to implement their own logic
+    }
+
+    /**
+     * Custom hook that allows other modules to perform operations after a DNI is deleted from the database.
+     *
+     * This hook is triggered after a DNI is deleted from the database, which happens when a customer is deleted.
+     * The hook will trigger even if no actual record is deleted from the database (for example, if a customer is deleted but no DNI was associated with them).
+     *
+     * @param array $params The parameters passed to the hook. The following keys are available:
+     * - `customerID` (int): The ID of the customer whose DNI was deleted.
+     * - `dni` (string): The DNI that was deleted.
+     *
+     * @return void
+     */
+    public function hookActionCustomerDNIDeleteAfter(array $params): void
+    {
+        // This hook is intentionally left blank for other modules to implement their own logic
     }
 
     /**

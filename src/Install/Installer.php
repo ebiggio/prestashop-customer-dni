@@ -12,7 +12,11 @@ class Installer
 {
     public function install(Module $module): bool
     {
-        if ( ! $this->registerHooks($module)) {
+        if ( ! $this->registerPrestaShopHooks($module)) {
+            return false;
+        }
+
+        if ( ! $this->registerCustomHooks($module)) {
             return false;
         }
 
@@ -29,13 +33,13 @@ class Installer
     }
 
     /**
-     * Registers the module's hooks.
+     * Registers the PrestaShop hooks that this module uses.
      *
-     * @param Module $module
+     * @param Module $module The module instance.
      *
-     * @return bool
+     * @return bool Whether the hooks were registered successfully.
      */
-    public function registerHooks(Module $module): bool
+    private function registerPrestaShopHooks(Module $module): bool
     {
         $hooks = [
             'actionCustomerGridDefinitionModifier',
@@ -61,7 +65,29 @@ class Installer
         return $module->registerHook($hooks);
     }
 
-    public function prepareDatabase(): bool
+    /**
+     * Registers the custom hooks that this module provides.
+     *
+     * @param Module $module The module instance.
+     *
+     * @return bool Whether the hooks were registered successfully.
+     */
+    private function registerCustomHooks(Module $module): bool
+    {
+        $hooks = [
+            'actionCustomerDNIAddAfter', // Fires after a DNI is associated with a customer, whether it's added or updated.
+            'actionCustomerDNIDeleteAfter', // Fires after a DNI is deleted from the database (i.e., when a customer is deleted).
+        ];
+
+        return $module->registerHook($hooks);
+    }
+
+    /**
+     * Prepares the database for the module.
+     *
+     * @return bool Whether the database was prepared successfully.
+     */
+    private function prepareDatabase(): bool
     {
         return (new Install())->run();
     }

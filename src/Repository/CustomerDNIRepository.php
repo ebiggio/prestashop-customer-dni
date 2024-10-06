@@ -51,6 +51,9 @@ class CustomerDNIRepository extends EntityRepository
     /**
      * Add or update the DNI of a customer.
      *
+     * Fires the `actionCustomerDNIAddAfter` hook, independently of whether the DNI was added or updated.
+     * The hook passes the customer ID and the DNI as parameters.
+     *
      * @param int $customerID The ID of the customer.
      * @param string $dni The DNI of the customer.
      *
@@ -71,10 +74,18 @@ class CustomerDNIRepository extends EntityRepository
         $entityManager = $this->getEntityManager();
         $entityManager->persist($customerDNI);
         $entityManager->flush();
+
+        Hook::exec('actionCustomerDNIAddAfter', [
+            'customer_id' => $customerID,
+            'dni'         => $dni
+        ]);
     }
 
     /**
      * Delete the DNI of a customer.
+     *
+     * Fires the `actionCustomerDNIDeleteAfter` hook, independently of whether a record was deleted.
+     * The hook passes the customer ID and the DNI as parameters.
      *
      * @param int $customerID The ID of the customer.
      *
@@ -90,5 +101,10 @@ class CustomerDNIRepository extends EntityRepository
             $entityManager->remove($customerDNI);
             $entityManager->flush();
         }
+
+        Hook::exec('actionCustomerDNIDeleteAfter', [
+            'customer_id' => $customerID,
+            'dni'         => $customerDNI,
+        ]);
     }
 }

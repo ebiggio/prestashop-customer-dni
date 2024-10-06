@@ -7,6 +7,3 @@ services:
     factory: [ '@doctrine.orm.default_entity_manager', getRepository ]
     arguments:
       - CustomerDNI\Entity\CustomerDNI
-
-  customer_dni.presenter.customer_dni_presenter:
-    class: CustomerDNI\Presenter\CustomerDNIPresenter

@@ -11,12 +11,13 @@
 declare(strict_types = 1);
 
 use CustomerDNI\Install\InstallerFactory;
-use CustomerDNI\Interface\CustomValidator;
-use CustomerDNI\Repository\CustomerDNIRepository;
+use CustomerDNI\ConstraintValidator\CustomerDNI;
+use CustomerDNI\ConstraintValidator\Factory\CustomerDNIValidatorFactory;
 use CustomerDNI\Controller\BackOfficeHooks;
 use CustomerDNI\Controller\FrontOfficeHooks;
 
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+use Symfony\Component\Validator\Validation;
 
 if ( ! defined('_PS_VERSION_')) exit;
 
@@ -146,11 +147,7 @@ class Customer_DNI extends Module
      */
     public function hookActionAfterCreateCustomerFormHandler(array $params): void
     {
-        if ($errorMessage = $this->getValidationErrorsForDNI($params['form_data']['customer_dni'], null)) {
-            throw new PrestaShopException($errorMessage);
-        }
-
-        BackOfficeHooks::actionAfterCreateCustomerFormHandler((int)$params['id'], $params['form_data']['customer_dni']);
+        BackOfficeHooks::actionAfterCreateCustomerFormHandler((int)$params['id'], (string)$params['form_data']['customer_dni']);
     }
 
     /**
@@ -163,11 +160,7 @@ class Customer_DNI extends Module
      */
     public function hookActionAfterUpdateCustomerFormHandler(array $params): void
     {
-        if ($errorMessage = $this->getValidationErrorsForDNI($params['form_data']['customer_dni'], (int)$params['id'])) {
-            throw new PrestaShopException($errorMessage);
-        }
-
-        BackOfficeHooks::actionAfterUpdateCustomerFormHandler((int)$params['id'], $params['form_data']['customer_dni']);
+        BackOfficeHooks::actionAfterUpdateCustomerFormHandler((int)$params['id'], (string)$params['form_data']['customer_dni']);
     }
 
     /**
@@ -247,19 +240,20 @@ class Customer_DNI extends Module
     {
         // We only added one field, so we know the DNI field is at index 0
         $customerDNIFormField = $params['fields'][0];
+        $dni = (string)$customerDNIFormField->getValue();
 
-        if ($errorMessage = $this->getValidationErrorsForDNI($customerDNIFormField->getValue(), $this->context->customer->id)) {
+        if ($errorMessage = $this->getValidationErrorsForDNI($dni, $this->context->customer->id)) {
             $params['fields']['0']->addError($errorMessage);
         } else {
             // We check if in the context, the customer ID is set to determine if the customer is being edited or created
             if ($this->context->customer->id) {
                 // If the customer is being edited, we call the hook to update the DNI
                 // Since the logic is the same that the one used in the back office, we reuse the same method
-                BackOfficeHooks::actionAfterUpdateCustomerFormHandler($this->context->customer->id, $customerDNIFormField->getValue());
+                BackOfficeHooks::actionAfterUpdateCustomerFormHandler($this->context->customer->id, $dni);
             } else {
                 // If the customer is being created, we can't directly save the DNI because the customer ID is not set yet.
                 // Instead, we store the DNI in FrontOfficeHooks singleton instance to be used later in the hook "actionCustomerAccountAdd"
-                FrontOfficeHooks::getInstance()->dni_value = $customerDNIFormField->getValue();
+                FrontOfficeHooks::getInstance()->dni_value = $dni;
             }
         }
     }
@@ -282,101 +276,20 @@ class Customer_DNI extends Module
     }
 
     /**
-     * Performs common validations on the DNI and returns an error message if any validation fails.
+     * Executes the validator for the DNI field and returns the error message if any validation fails.
      *
      * @param string $dni The DNI to validate.
-     * @param int|null $currentCustomerID The ID of the customer being edited. If null, a new customer is being created.
+     * @param int|null $currentCustomerID The ID of the customer whose DNI is being validated.
      *
      * @return string An error message if any validation fails. Otherwise, an empty string.
-     * @throws Exception If the container of the module is not found.
      */
     private function getValidationErrorsForDNI(string $dni, int|null $currentCustomerID): string
     {
-        // Check if the DNI is required
-        if (Configuration::get('CUSTOMER_DNI_REQUIRED') && empty($dni)) {
-            return $this->getTranslator()->trans('The DNI is required.', [], 'Modules.Customerdni.Admin');
-        }
+        $validatorBuilder = Validation::createValidatorBuilder();
+        $validatorBuilder->setConstraintValidatorFactory(new CustomerDNIValidatorFactory);
+        $validator = $validatorBuilder->getValidator();
+        $violations = $validator->validate($dni, new CustomerDNI(['customerID' => $currentCustomerID]));
 
-        // Check the DNI against the stored regular expression
-        if (Configuration::get('CUSTOMER_DNI_REGEXP') && ! preg_match(Configuration::get('CUSTOMER_DNI_REGEXP'), $dni)) {
-            return $this->getTranslator()->trans('The DNI is not valid.', [], 'Modules.Customerdni.Admin');
-        }
-
-        // Check if the DNI must be unique (i.e., no two customers can have the same DNI)
-        if (Configuration::get('CUSTOMER_DNI_UNIQUE')) {
-            /** @var CustomerDNIRepository $customerDNIRepository */
-            $customerDNIRepository = $this->get('customer_dni.repository.customer_dni_repository');
-            $existingCustomerIDs = $customerDNIRepository->getAllCustomerIDsByDNI($dni);
-
-            if ($existingCustomerIDs && ! in_array($currentCustomerID, $existingCustomerIDs)) {
-                foreach ($existingCustomerIDs as $existingCustomerID) {
-                    $existingCustomer = new Customer($existingCustomerID);
-
-                    /*
-                     * If the existing customer is a guest, we ignore the uniqueness check.
-                     * Otherwise, a guest customer that performs a purchase would not later be able to create an account
-                     * with its own DNI used in said purchase
-                     */
-                    if ($existingCustomer->is_guest) {
-                        continue;
-                    } else {
-                        return $this->getTranslator()->trans('The DNI is already assigned to another customer.', [], 'Modules.Customerdni.Admin');
-                    }
-                }
-            }
-        }
-
-        // Check the DNI against custom validators
-        if (Configuration::get('CUSTOMER_DNI_CUSTOM_VALIDATORS')) {
-            return $this->performCustomDNIValidations($dni);
-        }
-
-        return '';
-    }
-
-    /**
-     * Performs additional validations on the DNI, and returns an error message if any validation fails.
-     *
-     * This method will perform custom validations on the DNI, based on the classes that implement the CustomValidator interface
-     * located in the `custom_validators` directory of the module.
-     *
-     * @param string $dni The DNI to validate.
-     *
-     * @return string An error message if any validation fails. Otherwise, an empty string.
-     */
-    private function performCustomDNIValidations(string $dni): string
-    {
-        // Get all the PHP files in the `custom_validators` directory, except for the `index.php` file
-        $validationClasses = glob(__DIR__ . '/custom_validators/*.php');
-        $validationClasses = array_filter($validationClasses, function ($file) {
-            return basename($file) !== 'index.php';
-        });
-
-        // Check if there are any validation classes
-        if (empty($validationClasses)) {
-            return '';
-        }
-
-        // Check the DNI against each validation class
-        foreach ($validationClasses as $validationClass) {
-            // Include the validation class
-            require_once $validationClass;
-
-            // Get the class name
-            $className = pathinfo($validationClass, PATHINFO_FILENAME);
-
-            // Create an instance of the validation class
-            $validationInstance = new $className();
-
-            if ( ! $validationInstance instanceof CustomValidator) {
-                continue;
-            }
-
-            if ( ! $validationInstance->validateDNI($dni)) {
-                return $validationInstance->getErrorMessage();
-            }
-        }
-
-        return '';
+        return $violations->count() ? $violations[0]->getMessage() : '';
     }
 }

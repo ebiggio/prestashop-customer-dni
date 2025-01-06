@@ -67,13 +67,13 @@ con permisos de edición de clientes pueden editarlo fácilmente.
 El campo DNI se almacena en una nueva tabla en la base de datos, vinculada al ID del cliente.
 Al restablecer o desinstalar el módulo, el campo DNI se eliminará del formulario de cliente, pero los datos de DNI guardados previamente permanecerán en la tabla `customer_dni` del módulo.
 
-Puedes utilizar el campo DNI en otros módulos o personalizaciones recuperándolo directamente de la tabla de base de datos `customer_dni` utilizando el ID del cliente.
+Puedes utilizar el campo DNI en otros módulos o personalizaciones recuperándolo directamente de la tabla `customer_dni` de la base de datos, filtrando por el ID del cliente.
 
 ## Personalización
 
 Puedes personalizar el módulo añadiendo validadores adicionales para el campo DNI.
 Para hacerlo, añade una clase de validador personalizado que implemente la interfaz `CustomValidator` a la carpeta `custom_validators`.
-El módulo tiene un validador personalizado integrado que comprueba el DNI contra el formato de RUT chileno.
+El módulo incluye un validador personalizado que comprueba el DNI contra el formato de RUT chileno.
 Puedes utilizar esta clase como referencia para crear tu propio validador personalizado.
 
 El módulo también proporciona dos hooks personalizados que pueden ser utilizados para añadir funcionalidades programáticamente:
@@ -92,7 +92,9 @@ Este módulo está licenciado bajo la Licencia MIT. Puedes ver los detalles de l
 
 Ideas para futuras mejoras no contempladas en la versión actual del módulo:
 
+- Permitir obtener el DNI de un cliente directamente desde el objeto `Customer` de PrestaShop, en lugar de tener que hacer una consulta a la base de datos.
+- Permitir obtener el DNI de un cliente mediante la API.
 - Añadir soporte para PrestaShop 1.7.6 y versiones anteriores.
 - Permitir seleccionar la ubicación del campo DNI en el formulario de cliente del front office (por ejemplo, antes o después del campo de email).
-- Validar el DNI durante la creación de un cliente mediante la API.
+- Validar el DNI durante la creación de un cliente mediante la API (no estoy seguro si esta validación es realmente necesaria).
 - Ofrecer hooks que permitan añadir validaciones personalizadas al DNI de un cliente programáticamente.

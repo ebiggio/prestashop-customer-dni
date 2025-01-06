@@ -275,7 +275,6 @@ class Customer_DNI extends Module
     {
         // We check if the DNI value was saved in the FrontOfficeHooks singleton instance
         $front_office_hooks = FrontOfficeHooks::getInstance();
-
         if ($front_office_hooks->dni_value) {
             FrontOfficeHooks::actionCustomerAccountAdd((int)$params['newCustomer']->id, $front_office_hooks->dni_value);
         }

@@ -66,13 +66,13 @@ customer edit permissions can easily edit it.
 The DNI field is stored in a new table in the database, linked to the customer's ID.
 Upon resetting or uninstalling the module, the DNI field will be removed from the customer form, but previously saved DNI data will remain in the module's `customer_dni` table.
 
-You can use the DNI field in other modules or customizations by retrieving it directly from the database table `customer_dni` using the customer's ID.
+You can use the DNI field in other modules or customizations by retrieving it directly from the database table `customer_dni`, filtering by the customer's ID.
 
 ## Customization
 
 You can customize the module by adding additional validators for the DNI field.
 To do this, add a custom validator class that implements the `CustomValidator` interface to the `custom_validators` folder.
-The module has a built-in custom validator that checks the DNI against the chilean RUT format.
+The module includes a built-in custom validator that checks the DNI against the chilean RUT format.
 You can use this class as a reference to create your own custom validator.
 
 The module also offers two custom hooks that can be used to add additional functionality programmatically:
@@ -91,7 +91,9 @@ This module is released under GNU General Public License version 3. You can find
 
 Ideas for future improvements not covered in the current version of the module:
 
+- Allow getting the customer DNI directly from PrestaShop's `customer` object, instead of querying the database.
+- Allow getting the customer DNI through the API.
 - Add support for PrestaShop 1.7.6 and earlier versions.
 - Allow selecting the location of the DNI field in the customer form of the front office (e.g., before or after the email field).
-- Validate the DNI during customer creation through the API.
+- Validate the DNI during customer creation through the API (not sure if this check is actually needed).
 - Define hooks to add additional custom validations to the customer's DNI programmatically.

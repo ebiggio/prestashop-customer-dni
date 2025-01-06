@@ -1,9 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Form;
+namespace Ebiggio\CustomerDNI\Form;
 
-use CustomerDNI\Config\ModuleSettings;
+use Ebiggio\CustomerDNI\Config\ModuleSettings;
 
 use PrestaShop\PrestaShop\Core\Configuration\DataConfigurationInterface;
 use PrestaShop\PrestaShop\Core\ConfigurationInterface;
@@ -60,6 +60,7 @@ class SettingsDataConfiguration implements DataConfigurationInterface
      * Validates the configuration values, setting the errors in the `$errors` property if any validation fails.
      *
      * @param array $configuration Configuration values to validate.
+     *
      * @return bool True if the configuration is valid, false otherwise.
      */
     public function validateConfiguration(array $configuration): bool
@@ -83,7 +84,7 @@ class SettingsDataConfiguration implements DataConfigurationInterface
                 }
 
                 // The rest of the settings, except for `customer_dni_regexp`, behave like a "boolean switch", so their values can be either `true` or `false`
-                if ( ! in_array($configuration[$key], [true, false], true) && $key !== 'customer_dni_regexp') {
+                if ( ! in_array($configuration[$key], [true, false], true) && 'customer_dni_regexp' !== $key) {
                     $this->errors[$key] = $context->getTranslator()->trans('The value is not valid.', [], 'Modules.Customerdni.Admin');
 
                     $isValidConfiguration = false;

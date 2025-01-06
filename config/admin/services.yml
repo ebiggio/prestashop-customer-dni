@@ -2,35 +2,35 @@ imports:
   - { resource: ../common.yml }
 
 services:
-  CustomerDNI\Controller\BackOfficeSettings:
+  ebiggio.customer_dni.controller.back_office_settings:
     public: true
-    class: CustomerDNI\Controller\BackOfficeSettings
+    class: Ebiggio\CustomerDNI\Controller\BackOfficeSettings
 
-  customer_dni.form.settings_form:
+  ebiggio.customer_dni.form.settings_form:
     public: true
-    class: CustomerDNI\Form\SettingsFormType
+    class: Ebiggio\CustomerDNI\Form\SettingsFormType
     parent: 'form.type.translatable.aware'
     tags:
       - { name: form.type }
 
-  customer_dni.form.settings_form_handler:
+  ebiggio.customer_dni.form.settings_form_handler:
     public: true
     class: PrestaShop\PrestaShop\Core\Form\Handler
     arguments:
       - '@form.factory'
       - '@prestashop.core.hook.dispatcher'
-      - '@customer_dni.form.settings_data_provider'
-      - 'CustomerDNI\Form\SettingsFormType'
+      - '@ebiggio.customer_dni.form.settings_data_provider'
+      - 'Ebiggio\CustomerDNI\Form\SettingsFormType'
       - 'Settings'
 
-  customer_dni.form.settings_data_configuration:
+  ebiggio.customer_dni.form.settings_data_configuration:
     public: true
-    class: CustomerDNI\Form\SettingsDataConfiguration
+    class: Ebiggio\CustomerDNI\Form\SettingsDataConfiguration
     arguments:
       - '@prestashop.adapter.legacy.configuration'
 
-  customer_dni.form.settings_data_provider:
+  ebiggio.customer_dni.form.settings_data_provider:
     public: true
-    class: CustomerDNI\Form\SettingsDataProvider
+    class: Ebiggio\CustomerDNI\Form\SettingsDataProvider
     arguments:
-      - '@customer_dni.form.settings_data_configuration'
+      - '@ebiggio.customer_dni.form.settings_data_configuration'

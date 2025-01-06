@@ -1,12 +1,12 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Entity;
+namespace Ebiggio\CustomerDNI\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CustomerDNI\Repository\CustomerDNIRepository")
+ * @ORM\Entity(repositoryClass="Ebiggio\CustomerDNI\Repository\CustomerDNIRepository")
  */
 class CustomerDNI
 {

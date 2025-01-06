@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Config;
+namespace Ebiggio\CustomerDNI\Config;
 
 class ModuleSettings
 {

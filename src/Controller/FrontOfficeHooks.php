@@ -1,9 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Controller;
+namespace Ebiggio\CustomerDNI\Controller;
 
-use CustomerDNI\Repository\CustomerDNIRepository;
+use Ebiggio\CustomerDNI\Repository\CustomerDNIRepository;
 
 use PrestaShop\PrestaShop\Adapter\ContainerFinder;
 use Context;
@@ -56,7 +56,7 @@ class FrontOfficeHooks
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
+        $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
         $customerDNI = is_null($context->customer->id) ? '' : $customerDNIRepository->getDNIByCustomerId($context->customer->id);
 
         $currentFields = $form_fields;
@@ -100,7 +100,7 @@ class FrontOfficeHooks
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
+        $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
         $customerDNIRepository->addOrUpdateDNI($customerID, $dni);
     }
 }

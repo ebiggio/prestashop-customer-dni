@@ -1,11 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Repository;
+namespace Ebiggio\CustomerDNI\Repository;
 
-use CustomerDNI\Entity\CustomerDNI;
+use Ebiggio\CustomerDNI\Entity\CustomerDNI;
+
 use Doctrine\ORM\EntityRepository;
-
 use Hook;
 use PrestaShopException;
 

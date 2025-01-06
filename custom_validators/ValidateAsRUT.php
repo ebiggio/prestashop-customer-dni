@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-use CustomerDNI\Interface\CustomValidator;
+use Ebiggio\CustomerDNI\Interface\CustomValidator;
 
 /**
  * Validates a DNI as a RUT (Rol Único Tributario).
@@ -21,6 +21,7 @@ class ValidateAsRUT implements CustomValidator
      * Can receive a DNI with or without dots and dashes.
      *
      * @param string $dni The DNI to validate.
+     *
      * @return bool True if the DNI is valid as a RUT, false otherwise.
      */
     public function validateDNI(string $dni): bool

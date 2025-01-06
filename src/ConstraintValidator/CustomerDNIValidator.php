@@ -1,10 +1,10 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\ConstraintValidator;
+namespace Ebiggio\CustomerDNI\ConstraintValidator;
 
-use CustomerDNI\Interface\CustomValidator;
-use CustomerDNI\Repository\CustomerDNIRepository;
+use Ebiggio\CustomerDNI\Interface\CustomValidator;
+use Ebiggio\CustomerDNI\Repository\CustomerDNIRepository;
 
 use PrestaShop\PrestaShop\Adapter\ContainerFinder;
 use PrestaShop\PrestaShop\Core\Exception\ContainerNotFoundException;
@@ -85,7 +85,7 @@ class CustomerDNIValidator extends ConstraintValidator
         // Check if the DNI must be unique (i.e., no two customers can have the same DNI)
         if (Configuration::get('CUSTOMER_DNI_UNIQUE')) {
             /** @var CustomerDNIRepository $customerDNIRepository */
-            $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
+            $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
             $existingCustomerIDs = $customerDNIRepository->getAllCustomerIDsByDNI($dni);
 
             if ($existingCustomerIDs && ! in_array($customerID, $existingCustomerIDs)) {
@@ -124,6 +124,7 @@ class CustomerDNIValidator extends ConstraintValidator
      * located in the `custom_validators` directory of the module.
      *
      * @param string $dni The DNI to be validated.
+     *
      * @return bool Whether the DNI is valid.
      */
     private function validateDNIUsingCustomValidators(string $dni): bool
@@ -142,13 +143,9 @@ class CustomerDNIValidator extends ConstraintValidator
 
         // Check the DNI against each validation class
         foreach ($validationClasses as $validationClass) {
-            // Include the validation class
             require_once $validationClass;
 
-            // Get the class name
             $className = pathinfo($validationClass, PATHINFO_FILENAME);
-
-            // Create an instance of the validation class
             $validationInstance = new $className();
 
             if ( ! $validationInstance instanceof CustomValidator) {

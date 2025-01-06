@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\ConstraintValidator;
+namespace Ebiggio\CustomerDNI\ConstraintValidator;
 
 use Symfony\Component\Validator\Constraint;
 

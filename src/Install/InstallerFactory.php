@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace CustomerDNI\Install;
+namespace Ebiggio\CustomerDNI\Install;
 
 class InstallerFactory
 {

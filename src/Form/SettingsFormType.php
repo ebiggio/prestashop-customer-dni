@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Form;
+namespace Ebiggio\CustomerDNI\Form;
 
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
 use Symfony\Component\Form\FormBuilderInterface;

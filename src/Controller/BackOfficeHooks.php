@@ -1,10 +1,10 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Controller;
+namespace Ebiggio\CustomerDNI\Controller;
 
-use CustomerDNI\Repository\CustomerDNIRepository;
-use CustomerDNI\ConstraintValidator\CustomerDNI;
+use Ebiggio\CustomerDNI\Repository\CustomerDNIRepository;
+use Ebiggio\CustomerDNI\ConstraintValidator\CustomerDNI;
 
 use PrestaShop\PrestaShop\Adapter\ContainerFinder;
 use PrestaShop\PrestaShop\Core\Grid\Definition\GridDefinition;
@@ -112,7 +112,7 @@ class BackOfficeHooks
         $customerDNI = '';
         if (null !== $customerID) {
             /** @var CustomerDNIRepository $customerDNIRepository */
-            $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
+            $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
             $customerDNI = $customerDNIRepository->getDNIByCustomerID($customerID);
         }
 
@@ -135,7 +135,7 @@ class BackOfficeHooks
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
+        $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
         $customerDNIRepository->addOrUpdateDNI($customerID, $dni);
     }
 
@@ -184,7 +184,7 @@ class BackOfficeHooks
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
+        $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
         $customerDNIRepository->deleteDNIByCustomerId($customerID);
     }
 
@@ -203,7 +203,7 @@ class BackOfficeHooks
         $container = (new ContainerFinder($context))->getContainer();
 
         /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('customer_dni.repository.customer_dni_repository');
+        $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
         $customerDNI = $customerDNIRepository->getDNIByCustomerID($customerID) ?? '';
         $truncatedDNI = substr($customerDNI, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
 

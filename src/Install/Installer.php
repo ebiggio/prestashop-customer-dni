@@ -1,10 +1,10 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Install;
+namespace Ebiggio\CustomerDNI\Install;
 
-use CustomerDNI\Database\Install;
-use CustomerDNI\Database\Uninstall;
+use Ebiggio\CustomerDNI\Database\Install;
+use Ebiggio\CustomerDNI\Database\Uninstall;
 
 use Module;
 
@@ -27,6 +27,7 @@ class Installer
         return true;
     }
 
+    // TODO Move this function to a new Uninstaller class
     public function uninstall(): bool
     {
         return (new Uninstall())->run();

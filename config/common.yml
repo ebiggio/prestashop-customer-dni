@@ -2,8 +2,8 @@ services:
   _defaults:
     public: true
 
-  customer_dni.repository.customer_dni_repository:
-    class: CustomerDNI\Repository\CustomerDNIRepository
+  ebiggio.customer_dni.repository.customer_dni_repository:
+    class: Ebiggio\CustomerDNI\Repository\CustomerDNIRepository
     factory: [ '@doctrine.orm.default_entity_manager', getRepository ]
     arguments:
-      - CustomerDNI\Entity\CustomerDNI
+      - Ebiggio\CustomerDNI\Entity\CustomerDNI

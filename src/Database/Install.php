@@ -1,9 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Database;
+namespace Ebiggio\CustomerDNI\Database;
 
-use CustomerDNI\Config\ModuleSettings;
+use Ebiggio\CustomerDNI\Config\ModuleSettings;
 
 use Db;
 use Configuration;
@@ -12,11 +12,11 @@ class Install
 {
     public function run(): bool
     {
-        return $this->installTables()
+        return $this->createTable()
             && $this->installConfiguration();
     }
 
-    private function installTables(): bool
+    private function createTable(): bool
     {
         $query = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'customer_dni` (
             `id_customer` int(10) unsigned NOT NULL,
@@ -31,6 +31,7 @@ class Install
         return true;
     }
 
+    // TODO Move this function to the Installer class
     private function installConfiguration(): bool
     {
         foreach (ModuleSettings::SETTINGS as $settingName => $settingValue) {

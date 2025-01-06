@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace CustomerDNI\Database;
+namespace Ebiggio\CustomerDNI\Database;
 
-use CustomerDNI\Config\ModuleSettings;
+use Ebiggio\CustomerDNI\Config\ModuleSettings;
 
 use Configuration;
 

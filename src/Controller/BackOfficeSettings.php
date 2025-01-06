@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace CustomerDNI\Controller;
+namespace Ebiggio\CustomerDNI\Controller;
 
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ class BackOfficeSettings extends FrameworkBundleAdminController
 {
     public function index(Request $request): Response
     {
-        $formHandler = $this->get('customer_dni.form.settings_form_handler');
+        $formHandler = $this->get('ebiggio.customer_dni.form.settings_form_handler');
         $configurationForm = $formHandler->getForm();
         $configurationForm->handleRequest($request);
 

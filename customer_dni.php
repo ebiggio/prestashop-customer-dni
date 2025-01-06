@@ -10,11 +10,11 @@
  */
 declare(strict_types = 1);
 
-use CustomerDNI\Install\InstallerFactory;
-use CustomerDNI\ConstraintValidator\CustomerDNI;
-use CustomerDNI\ConstraintValidator\Factory\CustomerDNIValidatorFactory;
-use CustomerDNI\Controller\BackOfficeHooks;
-use CustomerDNI\Controller\FrontOfficeHooks;
+use Ebiggio\CustomerDNI\Install\InstallerFactory;
+use Ebiggio\CustomerDNI\ConstraintValidator\CustomerDNI;
+use Ebiggio\CustomerDNI\ConstraintValidator\Factory\CustomerDNIValidatorFactory;
+use Ebiggio\CustomerDNI\Controller\BackOfficeHooks;
+use Ebiggio\CustomerDNI\Controller\FrontOfficeHooks;
 
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 use Symfony\Component\Validator\Validation;
@@ -73,7 +73,7 @@ class Customer_DNI extends Module
     }
 
     /**
-     * @inerhitDoc
+     * {@inheritDoc}
      */
     public function isUsingNewTranslationSystem(): bool
     {
@@ -94,6 +94,7 @@ class Customer_DNI extends Module
      * Hook that modifies the customer grid definition, adding the `customer_dni` field as a column.
      *
      * Won't display the DNI field if the configuration setting `CUSTOMER_DNI_DISPLAY` is set to `false`.
+     *
      * @param array $params
      *
      * @return void
@@ -111,6 +112,7 @@ class Customer_DNI extends Module
      * Hook that modifies the customer grid query builder, adding the `customer_dni` field as a searchable and ordenable field.
      *
      * Won't display the DNI field if the configuration setting `CUSTOMER_DNI_DISPLAY` is set to `false`.
+     *
      * @param array $params
      *
      * @return void
@@ -273,6 +275,7 @@ class Customer_DNI extends Module
     {
         // We check if the DNI value was saved in the FrontOfficeHooks singleton instance
         $front_office_hooks = FrontOfficeHooks::getInstance();
+
         if ($front_office_hooks->dni_value) {
             FrontOfficeHooks::actionCustomerAccountAdd((int)$params['newCustomer']->id, $front_office_hooks->dni_value);
         }

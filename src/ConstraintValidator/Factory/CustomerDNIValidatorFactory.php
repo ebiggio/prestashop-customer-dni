@@ -1,7 +1,7 @@
 <?php
-namespace CustomerDNI\ConstraintValidator\Factory;
+namespace Ebiggio\CustomerDNI\ConstraintValidator\Factory;
 
-use CustomerDNI\ConstraintValidator\CustomerDNIValidator;
+use Ebiggio\CustomerDNI\ConstraintValidator\CustomerDNIValidator;
 
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
 use Symfony\Component\Validator\Constraint;

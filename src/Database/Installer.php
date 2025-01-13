@@ -3,19 +3,25 @@ declare(strict_types = 1);
 
 namespace Ebiggio\CustomerDNI\Database;
 
-use Ebiggio\CustomerDNI\Config\ModuleSettings;
-
 use Db;
-use Configuration;
 
-class Install
+class Installer
 {
-    public function run(): bool
+    /**
+     * Perform the installation task for the module at the database level.
+     *
+     * @return bool
+     */
+    public function install(): bool
     {
-        return $this->createTable()
-            && $this->installConfiguration();
+        return $this->createTable();
     }
 
+    /**
+     * Create the module's database table.
+     *
+     * @return bool
+     */
     private function createTable(): bool
     {
         $query = 'CREATE TABLE IF NOT EXISTS `' . _DB_PREFIX_ . 'customer_dni` (
@@ -26,18 +32,6 @@ class Install
 
         if ( ! Db::getInstance()->execute($query)) {
             return false;
-        }
-
-        return true;
-    }
-
-    // TODO Move this function to the Installer class
-    private function installConfiguration(): bool
-    {
-        foreach (ModuleSettings::SETTINGS as $settingName => $settingValue) {
-            if ( ! Configuration::updateValue($settingName, $settingValue)) {
-                return false;
-            }
         }
 
         return true;

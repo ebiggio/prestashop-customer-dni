@@ -3,10 +3,11 @@ declare(strict_types = 1);
 
 namespace Ebiggio\CustomerDNI\Install;
 
-use Ebiggio\CustomerDNI\Database\Install;
-use Ebiggio\CustomerDNI\Database\Uninstall;
+use Ebiggio\CustomerDNI\Database\Installer as DatabaseInstaller;
+use Ebiggio\CustomerDNI\Config\ModuleSettings;
 
 use Module;
+use Configuration;
 
 class Installer
 {
@@ -20,17 +21,15 @@ class Installer
             return false;
         }
 
-        if ( ! $this->prepareDatabase()) {
+        if ( ! (new DatabaseInstaller())->install()) {
+            return false;
+        }
+
+        if ( ! $this->saveDefaultSettings()) {
             return false;
         }
 
         return true;
-    }
-
-    // TODO Move this function to a new Uninstaller class
-    public function uninstall(): bool
-    {
-        return (new Uninstall())->run();
     }
 
     /**
@@ -84,12 +83,18 @@ class Installer
     }
 
     /**
-     * Prepares the database for the module.
+     * Saves the default settings for the module.
      *
-     * @return bool Whether the database was prepared successfully.
+     * @return bool Whether the default settings were saved successfully.
      */
-    private function prepareDatabase(): bool
+    private function saveDefaultSettings(): bool
     {
-        return (new Install())->run();
+        foreach (ModuleSettings::SETTINGS as $settingName => $settingValue) {
+            if ( ! Configuration::updateValue($settingName, $settingValue)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

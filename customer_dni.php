@@ -10,7 +10,8 @@
  */
 declare(strict_types = 1);
 
-use Ebiggio\CustomerDNI\Install\InstallerFactory;
+use Ebiggio\CustomerDNI\Install\Installer;
+use Ebiggio\CustomerDNI\Install\Uninstaller;
 use Ebiggio\CustomerDNI\ConstraintValidator\CustomerDNI;
 use Ebiggio\CustomerDNI\ConstraintValidator\Factory\CustomerDNIValidatorFactory;
 use Ebiggio\CustomerDNI\Controller\BackOfficeHooks;
@@ -58,18 +59,18 @@ class Customer_DNI extends Module
             return false;
         }
 
-        $installer = InstallerFactory::createInstaller();
-
-        return $installer->install($this);
+        return (new Installer())->install($this);
     }
 
     public function uninstall(): bool
     {
         $this->_clearCache('*');
 
-        $installer = InstallerFactory::createInstaller();
+        if ( ! parent::uninstall()) {
+            return false;
+        }
 
-        return $installer->uninstall() && parent::uninstall();
+        return (new Uninstaller())->uninstall();
     }
 
     /**

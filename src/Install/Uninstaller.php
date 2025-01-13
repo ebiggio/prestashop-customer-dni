@@ -1,20 +1,20 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace Ebiggio\CustomerDNI\Database;
+namespace Ebiggio\CustomerDNI\Install;
 
 use Ebiggio\CustomerDNI\Config\ModuleSettings;
 
 use Configuration;
 
-class Uninstall
+class Uninstaller
 {
-    public function run(): bool
-    {
-        return $this->uninstallConfiguration();
-    }
-
-    public function uninstallConfiguration(): bool
+    /**
+     * Performs the uninstallation process, deleting the module's configuration settings.
+     *
+     * @return bool
+     */
+    public function uninstall(): bool
     {
         foreach (ModuleSettings::SETTINGS as $settingName => $settingValue) {
             if ( ! Configuration::deleteByName($settingName)) {

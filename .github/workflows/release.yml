@@ -27,7 +27,7 @@ jobs:
       - name: Prepare module directory for packaging
         run: |
           mkdir -p $MODULE_DIR
-          rsync -a --exclude='.git/' --exclude='.gitignore' --exclude='.github/' . $MODULE_DIR/
+          rsync -a --exclude='.git/' --exclude='.gitignore' --exclude='.github/' ./ $MODULE_DIR/
           zip -r $ZIP_FILE $MODULE_DIR
 
       - name: Upload ZIP artifact for debugging

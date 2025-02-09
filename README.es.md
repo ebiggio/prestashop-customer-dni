@@ -6,7 +6,7 @@ Por defecto, PrestaShop no permite configurar el DNI (Documento Nacional de Iden
 En cambio, el campo se guarda a nivel de dirección, lo que en algunos casos no es lo más adecuado. Tampoco existe una validación adicional para el campo DNI;
 un cliente puede tener varias direcciones con diferentes DNI, e incluso se puede utilizar el mismo DNI para varias direcciones de distintos clientes.
 Este módulo añade un nuevo campo al formulario de registro y edición del cliente, cambiando el manejo del campo DNI a nivel de información personal del cliente.
-El módulo también proporciona opciones de validación adicionales para el campo DNI, como hacerlo obligatorio, único y validarlo contra una expresión regular.
+El módulo también proporciona opciones de validación adicionales para este campo, como hacerlo obligatorio, único y validarlo contra una expresión regular.
 
 ## Características
 
@@ -92,7 +92,9 @@ Este módulo está licenciado bajo la Licencia MIT. Puedes ver los detalles de l
 
 Ideas para futuras mejoras no contempladas en la versión actual del módulo:
 
-- Permitir obtener el DNI de un cliente directamente desde el objeto `Customer` de PrestaShop, en lugar de tener que hacer una consulta a la base de datos.
+- ~~Permitir obtener el DNI de un cliente directamente desde el objeto `Customer` de PrestaShop, en lugar de tener que hacer una consulta a la base de datos.~~  
+Esto requeriría sobreescribir la clase `Customer` de PrestaShop, lo que haría que el módulo fuera incompatible con otros módulos que también sobreescriban esa clase.
+También, sobreescribir clases es algo no recomendado según las paulas de desarrollo de PrestaShop: [PrestaShop developer documentation - Overrides](https://devdocs.prestashop-project.org/8/modules/concepts/overrides/)
 - Permitir obtener el DNI de un cliente mediante la API.
 - Añadir soporte para PrestaShop 1.7.6 y versiones anteriores.
 - Permitir seleccionar la ubicación del campo DNI en el formulario de cliente del front office (por ejemplo, antes o después del campo de email).

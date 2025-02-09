@@ -6,7 +6,7 @@ By default, PrestaShop does not allow setting the customer's DNI (National Ident
 Instead, the field is saved at the address level, which for some cases is not the most appropriate. There's also no additional validation for the DNI field;
 a customer can have multiple addresses with different DNIs, and even the same DNI can be used for multiple addresses for different customers.
 This module adds a new field to the registration and edit form of the customer, changing the handling of the DNI field at the customer's personal information level.
-The module also provides additional validation options for the DNI field, such as making it required, unique, and validating it against a regular expression.
+The module also provides additional validation options for this field, such as making it required, unique, and validating it against a regular expression.
 
 ## Features
 
@@ -91,7 +91,9 @@ This module is released under GNU General Public License version 3. You can find
 
 Ideas for future improvements not covered in the current version of the module:
 
-- Allow getting the customer DNI directly from PrestaShop's `customer` object, instead of querying the database.
+- ~~Allow getting the customer DNI directly from PrestaShop's `Customer` ObjectModel, instead of querying the database.~~  
+This would require overriding the `CustomerCore` class, which would made this module incompatible with other modules that also do this override.
+Making overrides is also not recommended per PrestaShop's guidelines: [PrestaShop developer documentation - Overrides](https://devdocs.prestashop-project.org/8/modules/concepts/overrides/)
 - Allow getting the customer DNI through the API.
 - Add support for PrestaShop 1.7.6 and earlier versions.
 - Allow selecting the location of the DNI field in the customer form of the front office (e.g., before or after the email field).

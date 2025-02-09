@@ -18,10 +18,16 @@ jobs:
           echo "MODULE_DIR=customer_dni" >> $GITHUB_ENV
           echo "ZIP_FILE=customer_dni-${GITHUB_REF_NAME}.zip" >> $GITHUB_ENV
 
+      - name: Install Composer
+        run: sudo apt-get update && sudo apt-get install -y composer
+
+      - name: Install dependencies with Composer
+        run: composer install --no-dev --optimize-autoloader
+
       - name: Prepare module directory for packaging
         run: |
           mkdir -p $MODULE_DIR
-          rsync -a --exclude='.git/' --exclude='.gitignore' . $MODULE_DIR/
+          rsync -a --exclude='.git/' --exclude='.gitignore' --exclude='.github/' . $MODULE_DIR/
           zip -r $ZIP_FILE $MODULE_DIR
 
       - name: Upload ZIP artifact for debugging

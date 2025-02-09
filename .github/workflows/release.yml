@@ -25,7 +25,7 @@ jobs:
           zip -r $ZIP_FILE $MODULE_DIR
 
       - name: Upload ZIP artifact for debugging
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: module-zip
           path: ${{ env.ZIP_FILE }}

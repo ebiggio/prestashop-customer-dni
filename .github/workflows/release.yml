@@ -1,0 +1,52 @@
+name: Create Release on tagged push
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers only for tags starting with 'v' (e.g., v1.0.0)
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set module and zip file names
+        run: |
+          echo "MODULE_DIR=customer_dni" >> $GITHUB_ENV
+          echo "ZIP_FILE=customer_dni-${GITHUB_REF_NAME}.zip" >> $GITHUB_ENV
+
+      - name: Prepare module directory for packaging
+        run: |
+          mkdir -p $MODULE_DIR
+          rsync -a --exclude='.git/' --exclude='.gitignore' . $MODULE_DIR/
+          zip -r $ZIP_FILE $MODULE_DIR
+
+      - name: Upload ZIP artifact for debugging
+        uses: actions/upload-artifact@v3
+        with:
+          name: module-zip
+          path: ${{ env.ZIP_FILE }}
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: "Release ${{ GITHUB_REF_NAME }}"
+          draft: false
+          prerelease: false
+
+      - name: Upload Release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.ZIP_FILE }}
+          asset_name: ${{ env.ZIP_FILE }}
+          asset_content_type: application/zip

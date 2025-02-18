@@ -26,6 +26,20 @@ use Exception;
 class BackOfficeHooks
 {
     /**
+     * Gets the customer DNI repository.
+     *
+     * @return CustomerDNIRepository The customer DNI repository.
+     * @throws Exception
+     */
+    private static function getCustomerDNIRepository(): CustomerDNIRepository
+    {
+        $context = Context::getContext();
+        $container = (new ContainerFinder($context))->getContainer();
+
+        /** @var CustomerDNIRepository $customerDNIRepository */
+        return $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
+    }
+    /**
      * Adds the custom DNI column to the customer grid definition used in the back office.
      *
      * @param GridDefinition $definition The grid definition.
@@ -97,7 +111,6 @@ class BackOfficeHooks
     {
         $required = (bool)Configuration::get('CUSTOMER_DNI_REQUIRED');
         $context = Context::getContext();
-        $container = (new ContainerFinder($context))->getContainer();
 
         $formBuilder->add('customer_dni', TextType::class, [
             'label'    => $context->GetTranslator()->trans('Customer DNI', [], 'Modules.Customerdni.Admin'),
@@ -110,10 +123,9 @@ class BackOfficeHooks
         );
 
         $customerDNI = '';
+
         if (null !== $customerID) {
-            /** @var CustomerDNIRepository $customerDNIRepository */
-            $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
-            $customerDNI = $customerDNIRepository->getDNIByCustomerID($customerID);
+            $customerDNI = self::getCustomerDNIRepository()->getDNIByCustomerID($customerID) ?? '';
         }
 
         $formData['customer_dni'] = $customerDNI;
@@ -131,12 +143,7 @@ class BackOfficeHooks
      */
     public static function actionAfterCreateCustomerFormHandler(int $customerID, string $dni): void
     {
-        $context = Context::getContext();
-        $container = (new ContainerFinder($context))->getContainer();
-
-        /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
-        $customerDNIRepository->addOrUpdateDNI($customerID, $dni);
+        self::getCustomerDNIRepository()->addOrUpdateDNI($customerID, $dni);
     }
 
     /**
@@ -155,7 +162,8 @@ class BackOfficeHooks
 
         // Check if we must overwrite the DNI in the address
         if (Configuration::get('CUSTOMER_DNI_OVERWRITE_ADDRESS_DNI')) {
-            $truncatedDNI = substr($dni, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
+            // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
+            $truncatedDNI = substr($dni, 0, 16);
 
             // Get all the addresses of the customer
             $customer = new Customer($customerID);
@@ -180,12 +188,7 @@ class BackOfficeHooks
      */
     public static function actionObjectCustomerDeleteAfter(int $customerID): void
     {
-        $context = Context::getContext();
-        $container = (new ContainerFinder($context))->getContainer();
-
-        /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
-        $customerDNIRepository->deleteDNIByCustomerId($customerID);
+        self::getCustomerDNIRepository()->deleteDNIByCustomerId($customerID);
     }
 
     /**
@@ -199,14 +202,9 @@ class BackOfficeHooks
      */
     public static function actionObjectAddressAddBefore(Address $address, int $customerID): void
     {
-        $context = Context::getContext();
-        $container = (new ContainerFinder($context))->getContainer();
+        $customerDNI = self::getCustomerDNIRepository()->getDNIByCustomerID($customerID) ?? '';
 
-        /** @var CustomerDNIRepository $customerDNIRepository */
-        $customerDNIRepository = $container->get('ebiggio.customer_dni.repository.customer_dni_repository');
-        $customerDNI = $customerDNIRepository->getDNIByCustomerID($customerID) ?? '';
-        $truncatedDNI = substr($customerDNI, 0, 16); // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
-
-        $address->dni = $truncatedDNI;
+        // Truncate the DNI to 16 characters, as the DNI field in the address table is a VARCHAR(16)
+        $address->dni = substr($customerDNI, 0, 16);
     }
 }

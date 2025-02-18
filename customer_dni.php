@@ -5,7 +5,7 @@
  * Adds a custom DNI field to customer registration and personal information forms.
  *
  * @author Enzo Biggio <ebiggio@gmail.com>
- * @version 1.0.0
+ * @version 1.1.2
  * @license GNU General Public License 3.0
  */
 declare(strict_types = 1);
@@ -36,7 +36,7 @@ class Customer_DNI extends Module
     {
         $this->name = 'customer_dni';
         $this->author = 'Enzo Biggio';
-        $this->version = '1.0.0';
+        $this->version = '1.1.2';
         $this->need_instance = 0;
         $this->bootstrap = true;
 
@@ -330,5 +330,33 @@ class Customer_DNI extends Module
         $violations = $validator->validate($dni, new CustomerDNI(['customerID' => $currentCustomerID]));
 
         return $violations->count() ? $violations[0]->getMessage() : '';
+    }
+
+    /**
+     * Retrieves the DNI of a customer by their ID.
+     *
+     * This method is intended to be used by other modules to retrieve the DNI of a customer, given their ID.
+     *
+     * Example usage:
+     * <pre>
+     * <?php
+     * $customerID = 1;
+     * $dni = '';
+     *
+     * $customerDNIModule = Module::getInstanceByName('customer_dni');
+     * if ($customerDNIModule && $customerDNIModule->active) {
+     *    $dni = $customerDNIModule->getDNIByCustomerID($customerID);
+     * }
+     * ?>
+     * </pre>
+     *
+     * @param int $customerID The ID of the customer.
+     *
+     * @return string The DNI of the customer, or an empty string if the customer has no DNI.
+     * @throws Exception
+     */
+    public function getDNIByCustomerID(int $customerID): string
+    {
+        return $this->get('ebiggio.customer_dni.repository.customer_dni_repository')->getDNIByCustomerID($customerID) ?? '';
     }
 }

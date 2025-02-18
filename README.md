@@ -1,6 +1,6 @@
 # <img src="logo.png" width="32" height="32" alt="Module logo"> Customer DNI module for PrestaShop
 
-## Version 1.0.0
+## Version 1.1.2
 
 By default, PrestaShop does not allow setting the customer's DNI (National Identity Document) when creating an account.
 Instead, the field is saved at the address level, which for some cases is not the most appropriate. There's also no additional validation for the DNI field;
@@ -22,11 +22,22 @@ The module also provides additional validation options for this field, such as m
 
 ## Requirements
 
-- Tested on PrestaShop 8.1, but should work on any version of PrestaShop 1.7.7 or higher.
+- Developed on PrestaShop 8.1, but _should work_ (not tested) on any version of PrestaShop 1.7.7 or higher.
 - PHP 8.0 or higher.
-- Composer, to generate the necessary autoload files.
+- Composer, to generate the necessary autoload files if installing from this repository.
 
-## Installation (from this repository)
+## Installation
+
+To install the module in your PrestaShop instance, you will need a ZIP file containing the module's code and its dependencies.
+You can get this ZIP file in two ways: downloading it from the repository's releases or generating it from the source code.
+
+### Getting the module ZIP file
+
+#### From the repository's releases
+
+1. Download the ZIP file of the latest release from the [Releases](https://github.com/ebiggio/prestashop-customer-dni/releases) section.
+
+#### From the source code
 
 1. Download this repository to a folder named `customer_dni`.
 2. Enter that folder, and run the following command to generate the necessary Composer autoload files:
@@ -36,13 +47,16 @@ composer dump-autoload -o --no-dev
 ```
 
 3. Compress the folder into a ZIP file.
-4. Upload the ZIP file to your PrestaShop instance. You can do this by going to the back office of your PrestaShop store and navigating to the `Modules` section.
+
+### Installing the module in PrestaShop
+
+1. Upload the ZIP file to your PrestaShop instance. You can do this by going to the back office of your PrestaShop store and navigating to the `Modules` section.
    Click on the `Upload a module` button and select the ZIP file you just created. You can also upload the ZIP file directly to the `modules` folder of your PrestaShop installation.
    If you choose this method, make sure to extract the ZIP file after uploading it, so the `customer_dni` folder is created inside the `modules` folder.
-5. After uploading the ZIP file, the module should appear in the list of modules in the back office, where you can install it.
-6. Once the module is installed, click on the `Configure` button to access the module's configuration page.
-7. Configure the module according to your needs and save the changes.
-8. The module is now ready to use. The DNI field should be displayed in the registration and edit form of the customer.
+2. After uploading the ZIP file, the module should appear in the list of modules in the back office, where you can install it.
+3. Once the module is installed, click on the `Configure` button to access the module's configuration page.
+4. Configure the module according to your needs and save the changes.
+5. The module is now ready to use. The DNI field should be displayed in the registration and edit form of the customer.
 
 ## Configuration
 
@@ -66,7 +80,32 @@ customer edit permissions can easily edit it.
 The DNI field is stored in a new table in the database, linked to the customer's ID.
 Upon resetting or uninstalling the module, the DNI field will be removed from the customer form, but previously saved DNI data will remain in the module's `customer_dni` table.
 
-You can use the DNI field in other modules or customizations by retrieving it directly from the database table `customer_dni`, filtering by the customer's ID.
+### Working with the customer DNI programmatically
+
+The module provides a method to retrieve the customer's DNI programmatically, which can be useful for other modules or customizations that need to access this information.
+Using the main module class, `CustomerDNI`, with the `getDNIByCustomerID` method, you can retrieve the DNI value by passing the customer ID as a parameter:
+
+```php
+$customer_id = 1; // The ID of the customer you want to retrieve the DNI from.
+$dni = '';
+
+$customerDNIModule = Module::getInstanceByName('customer_dni');
+if ($customerDNIModule && $customerDNIModule->active) {
+    $dni = $customerDNIModule->getDNIByCustomerID($customerID);
+}
+```
+
+This method will return the DNI value as a string, or an empty string if the customer does not have a DNI associated with it.
+
+#### Custom hooks
+
+The module also offers two custom hooks that can be used to add additional functionality when the customer DNI is saved or deleted:
+
+- `actionCustomerDNIAddAfter`: Triggered when the customer DNI is saved to the database. It will be fired when a new DNI is added or when an existing DNI is updated.
+- `actionCustomerDNIDeleteAfter`: Triggered when the customer DNI is removed from the database, which usually happens when the customer is deleted.
+  This hook will trigger even if no DNI was associated with the customer at the time of deletion.
+
+Both hooks return the customer ID and the DNI value as parameters.
 
 ## Customization
 
@@ -74,14 +113,6 @@ You can customize the module by adding additional validators for the DNI field.
 To do this, add a custom validator class that implements the `CustomValidator` interface to the `custom_validators` folder.
 The module includes a built-in custom validator that checks the DNI against the chilean RUT format.
 You can use this class as a reference to create your own custom validator.
-
-The module also offers two custom hooks that can be used to add additional functionality programmatically:
-
-- `actionCustomerDNIAddAfter`: Triggered when the customer DNI is saved to the database, being either a new DNI or an update to an existing one.
-- `actionCustomerDNIDeleteAfter`: Triggered when the customer DNI is removed from the database, which usually happens when the customer is deleted.
-  This hook will trigger even if no DNI was associated with the customer at the time of deletion.
-
-Both hooks return the customer ID and the DNI value as parameters.
 
 ## License
 

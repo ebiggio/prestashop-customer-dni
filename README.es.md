@@ -1,6 +1,6 @@
 # <img src="logo.png" width="32" height="32" alt="Module logo"> Módulo DNI Cliente para PrestaShop
 
-## Versión 1.0.0
+## Versión 1.1.2
 
 Por defecto, PrestaShop no permite configurar el DNI (Documento Nacional de Identidad) del cliente al crear una cuenta.
 En cambio, el campo se guarda a nivel de dirección, lo que en algunos casos no es lo más adecuado. Tampoco existe una validación adicional para el campo DNI;
@@ -23,11 +23,22 @@ El módulo también proporciona opciones de validación adicionales para este ca
 
 ## Requisitos
 
-- Probado en PrestaShop 8.1, pero debería funcionar en cualquier versión de PrestaShop 1.7.7 o superior.
+- Desarrollado en PrestaShop 8.1, pero _debería funcionar_ (no probado) en cualquier versión de PrestaShop 1.7.7 o superior.
 - PHP 8.0 o superior.
-- Composer, para generar los archivos de autoload necesarios.
+- Composer, para generar los archivos de autoload necesarios si el módulo se instala desde este repositorio.
 
-## Instalación (desde este repositorio)
+## Instalación
+
+Para instalar el módulo en tu instancia de PrestaShop, necesitarás un archivo ZIP que contenga el código del módulo y sus dependencias.
+Puedes obtener este archivo ZIP de dos maneras: descargándolo desde los _releases_ del repositorio o generándolo a partir del código fuente.
+
+### Obteniendo el archivo ZIP del módulo
+
+#### Desde los _releases_ del repositorio
+
+1. Descarga el archivo ZIP de la última versión desde la sección [Releases](https://github.com/ebiggio/prestashop-customer-dni/releases).
+
+#### Desde el código fuente
 
 1. Descarga este repositorio a una carpeta llamada `customer_dni`.
 2. Entra en dicha carpeta, y ejecuta el siguiente comando para generar los archivos de Composer necesarios:
@@ -37,13 +48,16 @@ composer dump-autoload -o --no-dev
 ```
 
 3. Comprime la carpeta en un archivo ZIP.
-4. Sube el archivo ZIP a tu instancia de PrestaShop. Puedes hacer esto yendo al back office de tu tienda PrestaShop y navegando a la sección `Módulos`.
+
+### Instalando el módulo en PrestaShop
+
+1. Sube el archivo ZIP a tu instancia de PrestaShop. Puedes hacer esto yendo al back office de tu tienda PrestaShop y navegando a la sección `Módulos`.
    Haz clic en el botón `Subir un módulo` y selecciona el archivo ZIP que acabas de crear. También puedes subir el archivo ZIP directamente a la carpeta `modules` de tu instalación de PrestaShop.
    Si eliges este método, asegúrate de extraer el archivo ZIP después de subirlo, para que se cree la carpeta `customer_dni` dentro de la carpeta `modules`.
-5. Después de subir el archivo ZIP, el módulo debería aparecer en la lista de módulos en el back office, donde puedes instalarlo.
-6. Una vez instalado el módulo, haz clic en el botón `Configurar` para acceder a la página de configuración del módulo.
-7. Configura el módulo según tus necesidades y guarda los cambios.
-8. El módulo está ahora listo para usarse. El campo DNI debería mostrarse en el formulario de registro y edición del cliente.
+2. Después de subir el archivo ZIP, el módulo debería aparecer en la lista de módulos en el back office, donde puedes instalarlo.
+3. Una vez instalado el módulo, haz clic en el botón `Configurar` para acceder a la página de configuración del módulo.
+4. Configura el módulo según tus necesidades y guarda los cambios.
+5. El módulo está ahora listo para usarse. El campo DNI debería mostrarse en el formulario de registro y edición del cliente.
 
 ## Configuración
 
@@ -67,7 +81,32 @@ con permisos de edición de clientes pueden editarlo fácilmente.
 El campo DNI se almacena en una nueva tabla en la base de datos, vinculada al ID del cliente.
 Al restablecer o desinstalar el módulo, el campo DNI se eliminará del formulario de cliente, pero los datos de DNI guardados previamente permanecerán en la tabla `customer_dni` del módulo.
 
-Puedes utilizar el campo DNI en otros módulos o personalizaciones recuperándolo directamente de la tabla `customer_dni` de la base de datos, filtrando por el ID del cliente.
+### Trabajando con el campo DNI programáticamente
+
+El módulo proporciona un método para obtener el DNI de un cliente programáticamente, lo que puede ser útil para otros módulos o personalizaciones que necesiten acceder a esta información.
+Usando la clase principal del módulo, `CustomerDNI`, con el método `getDNIByCustomerID`, puedes recuperar el valor del DNI pasando el ID del cliente como parámetro:
+
+```php
+$customer_id = 1; // El ID del cliente del que quieres recuperar el DNI.
+$dni = '';
+
+$customerDNIModule = Module::getInstanceByName('customer_dni');
+if ($customerDNIModule && $customerDNIModule->active) {
+    $dni = $customerDNIModule->getDNIByCustomerID($customer_id);
+}
+```
+
+Este método devolverá el valor del DNI como una cadena, o una cadena vacía si el cliente no tiene un DNI asociado.
+
+### Hooks personalizados
+
+El módulo también proporciona dos hooks personalizados que pueden ser utilizados para añadir funcionalidades adicionales cuando se guarda o elimina el DNI de un cliente:
+
+- `actionCustomerDNIAddAfter`: Se ejecuta después de que el DNI del cliente se guarda en la base de datos. Se activará cuando se añada un nuevo DNI o cuando se actualice un DNI existente.
+- `actionCustomerDNIDeleteAfter`: Se ejecuta cuando el DNI del cliente se elimina de la base de datos, lo que suele ocurrir cuando se elimina el cliente.
+  Este hook se ejecutará incluso si no había un DNI asociado al cliente en el momento de la eliminación.
+
+Ambos hooks devuelven el ID del cliente y el valor del DNI como parámetros.
 
 ## Personalización
 
@@ -75,14 +114,6 @@ Puedes personalizar el módulo añadiendo validadores adicionales para el campo 
 Para hacerlo, añade una clase de validador personalizado que implemente la interfaz `CustomValidator` a la carpeta `custom_validators`.
 El módulo incluye un validador personalizado que comprueba el DNI contra el formato de RUT chileno.
 Puedes utilizar esta clase como referencia para crear tu propio validador personalizado.
-
-El módulo también proporciona dos hooks personalizados que pueden ser utilizados para añadir funcionalidades programáticamente:
-
-- `actionCustomerDNIAddAfter`: Se ejecuta después de que el DNI del cliente se guarda en la base de datos, ya sea un DNI nuevo o una actualización de uno existente.
-- `actionCustomerDNIDeleteAfter`: Se ejecuta cuando el DNI del cliente se elimina de la base de datos, lo que suele ocurrir cuando se elimina el cliente.
-  Este hook se ejecutará incluso si no había un DNI asociado al cliente en el momento de la eliminación.
-
-Ambos hooks devuelven el ID del cliente y el valor del DNI como parámetros.
 
 ## Licencia
 

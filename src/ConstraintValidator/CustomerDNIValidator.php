@@ -94,8 +94,8 @@ class CustomerDNIValidator extends ConstraintValidator
 
                     /*
                      * If the existing customer is a guest, we ignore the uniqueness check.
-                     * Otherwise, a guest customer that performs a purchase would not later be able to create an account
-                     * with its own DNI used in said purchase
+                     * Otherwise, a guest customer that performs a purchase would not be able to create an account later
+                     * with the DNI used in said purchase
                      */
                     if ($existingCustomer->is_guest) {
                         continue;
@@ -120,8 +120,8 @@ class CustomerDNIValidator extends ConstraintValidator
     /**
      * Validates the DNI using custom validators.
      *
-     * This method will perform custom validations on the DNI, based on the classes that implement the CustomValidator interface
-     * located in the `custom_validators` directory of the module.
+     * This method will perform custom validations on the DNI, based on the classes located in the `custom_validators` directory
+     * that implement the CustomValidator interface.
      *
      * @param string $dni The DNI to be validated.
      *

@@ -62,7 +62,7 @@ composer dump-autoload -o --no-dev
 
 The module has a configuration page where you can set the following options:
 
-- **Display customer DNI in back-office**: Show the DNI field in the customer list of the back office, which also allows filtering and ordering by DNI value.
+- **Display customer DNI in back office**: Show the DNI field in the customer list of the back office, which also allows filtering and ordering by DNI value.
 - **Mark as required**: Make the DNI field required in the registration and edit form of the customer.
 - **Mark as unique**: Make the DNI field unique, so the same DNI cannot be used by multiple customers.
 - **Overwrite address DNI field**: Overwrite the default DNI field in the address form, so when the customer saves the DNI in the customer form,
@@ -123,7 +123,7 @@ This module is released under GNU General Public License version 3. You can find
 Ideas for future improvements not covered in the current version of the module:
 
 - ~~Allow getting the customer DNI directly from PrestaShop's `Customer` ObjectModel, instead of querying the database.~~  
-This would require overriding the `CustomerCore` class, which would made this module incompatible with other modules that also do this override.
+This would require overriding the `CustomerCore` class, which would make this module incompatible with other modules that also do this override.
 Making overrides is also not recommended per PrestaShop's guidelines: [PrestaShop developer documentation - Overrides](https://devdocs.prestashop-project.org/8/modules/concepts/overrides/)
 - Allow getting the customer DNI through the API.
 - Add support for PrestaShop 1.7.6 and earlier versions.

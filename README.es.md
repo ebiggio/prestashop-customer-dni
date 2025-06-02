@@ -63,7 +63,7 @@ composer dump-autoload -o --no-dev
 
 El módulo tiene una página de configuración donde puedes establecer las siguientes opciones:
 
-- **Mostrar DNI del cliente en el back-office**: Muestra el campo DNI en el listado de clientes del back office, lo que también permite filtrar y ordenar por el valor del DNI.
+- **Mostrar DNI del cliente en el back office**: Muestra el campo DNI en el listado de clientes del back office, lo que también permite filtrar y ordenar por el valor del DNI.
 - **Marcar como requerido**: Hace que el campo DNI sea obligatorio en el formulario de registro y edición del cliente.
 - **Marcar como único**: Hace que el campo DNI sea único, por lo que el mismo DNI no puede ser utilizado por varios clientes.
 - **Sobreescribir campo DNI de dirección**: Sobreescribe el campo DNI por defecto en el formulario de dirección, para que cuando el cliente guarde el DNI en el formulario de cliente,
